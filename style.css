@@ -1,5 +1,35 @@
 #canvasMain {
+    border: 5px inset blue;
+   
     width: 900;
     height: 650;
-    border: 5px inset blue;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border: 5px groove white;
+    background: rgb(255,0,0);
+    background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,255,1) 7%, rgba(233,19,7,1) 13%, rgba(255,255,255,1) 25%, rgba(238,1,1,0.9906337535014006) 35%, rgba(255,255,255,1) 45%, rgba(255,0,16,1) 56%, rgba(255,255,255,1) 64%, rgba(255,0,16,1) 72%, rgba(255,255,255,1) 79%, rgba(255,0,16,1) 86%, rgba(255,255,255,1) 93%, rgba(255,0,16,1) 100%);
+    position: relative;
+}
+
+#titleContainer {
+  /* border: 10px groove white;
+  background: rgb(255,0,0);
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,255,1) 7%, rgba(233,19,7,1) 13%, rgba(255,255,255,1) 25%, rgba(238,1,1,0.9906337535014006) 35%, rgba(255,255,255,1) 45%, rgba(255,0,16,1) 56%, rgba(255,255,255,1) 64%, rgba(255,0,16,1) 72%, rgba(255,255,255,1) 79%, rgba(255,0,16,1) 86%, rgba(255,255,255,1) 93%, rgba(255,0,16,1) 100%); */
+  position: relative;
+  width: 600px;
+  left: 25%;
+  
+}
+
+body {
+    background: rgb(0,183,255);
+    background: linear-gradient(90deg, rgba(0,183,255,1) 0%, rgba(0,0,0,1) 20%, rgba(0,183,255,1) 35%, rgba(255,255,255,1) 50%, rgba(0,183,255,1) 65%, rgba(0,0,0,1) 80%, rgba(0,183,255,1) 100%);
 }
