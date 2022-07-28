@@ -50,21 +50,21 @@ function animation(){
 animation();
 
 function spriteMovementKeys(){
-    if (keys['ArrowLeft']){
+    if (keys['ArrowLeft'] && player.xCoord > 0){
         player.xCoord -= player.speed;
         player.moving = true;
-        console.log(`Left Arrow Key  X: ${player.xCoord} Y: ${player.yCoord}`);
-    } else if (keys['ArrowRight']){
+        console.log(`Arrow Key Right  X: ${player.xCoord} Y: ${player.yCoord}`);
+    } else if (keys['ArrowRight'] && player.xCoord < canvas.width - 50){
         player.xCoord += player.speed;
         player.moving = true;
-        console.log(`Right Arrow key  X: ${player.xCoord}  Y: ${player.yCoord}`);
-    } else if (keys['ArrowUp']){
+        console.log(`Arrow Key Right  X: ${player.xCoord}  Y: ${player.yCoord}`);
+    } else if (keys['ArrowUp'] && player.yCoord > 140){
         player.yCoord -= player.speed;
         player.moving = true;
-        console.log(`Up Arrow Key  X:  ${player.xCoord}  Y:  ${player.yCoord}`);
-    } else if (keys["ArrowDown"]){
+        console.log(`Arrow Key Up  X:  ${player.xCoord}  Y:  ${player.yCoord}`);
+    } else if (keys["ArrowDown"] && player.yCoord < canvas.height - 170){
         player.yCoord += player.speed;
         player.moving = true;
-        console.log(`Down Arrow Key  X:  ${player.xCoord}  Y:  ${player.yCoord}`);
+        console.log(`Arrow Key Down  X:  ${player.xCoord}  Y:  ${player.yCoord}`);
     }
 }
