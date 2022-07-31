@@ -4,7 +4,7 @@ canvas.height = 650;
 const ctx = canvas.getContext('2d');
 ctx.font = '25px Impact';
 const staticCanvasWidth = 900;
-const staticCanvasHeight = 650;
+const staticCanvasHeight = 650; 
 console.log(ctx);
 let scoreBoard = 0;
 
@@ -99,7 +99,7 @@ class AttackRaven {
             if (this.frame > this.maxFrame) this.frame = 0;
             else this.frame++;
             this.timeSinceFlap = 0;
-            console.log(deltatime);
+            // console.log(deltatime);
         }
 
     }
@@ -133,16 +133,12 @@ class Enemy {
         } else if (this.xCoord > player.xCoord && this.yCoord < player.yCoord){// down left angle
             this.xCoord--;
             this.yCoord++;
-        // }  else if (this.xCoord < player.xCoord && this.yCoord > player.yCoord){
-        //     this.xCoord++;
-        //     this.yCoord--;
-        // } else if (this.xCoord > player.xCoord && this.yCoord < player.yCoord){
-        //     this.xCoord--;
-        //     this.yCoord++;
-        } else if (this.xCoord < player.xCoord){
-            this.xCoord++;
-        } else if (this.xCoord > player.xCoord){
+        } else if (this.xCoord > player.xCoord && this.yCoord > player.yCoord){// up left angle
             this.xCoord--;
+            this.yCoord--;
+        } else if (this.xCoord < player.xCoord && this.yCoord < player.yCoord){// down right angle
+            this.xCoord++;
+            this.yCoord++;
         }
 
     }
@@ -208,10 +204,6 @@ function animation(timestamp){
     
     ravens = ravens.filter(object => !object.markedToDelete);
     
-    console.log(ravens);
-    
-    // console.log(deltatime);
-    
     ctx.fillStyle = 'darkgreen';
     ctx.fillRect(0, 0, canvas.width, 100);
     ctx.fillStyle = 'red';
@@ -224,9 +216,6 @@ function animation(timestamp){
         drawScore();
         drawHowTo();
     
-    
-    // raven.update();
-    // raven.draw();
     ctx.drawImage(spritePlayer, 0, 0, player.width, player.height, player.xCoord, player.yCoord, player.sizeX, player.sizeY);
     terroristArray.forEach(enemy => {
         enemy.update();
