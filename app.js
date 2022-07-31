@@ -9,16 +9,16 @@ console.log(ctx);
 let scoreBoard = 0;
 
 const spritePlayer = new Image();
-spritePlayer.src = "/Users/calvin/Desktop/general-Assembly/unit-1/MyGame/KandysPaybackGame/playerSprites/idle.png";
+spritePlayer.src = "./playerSprites/idle.png";
 
 const enemySprite = new Image();
-enemySprite.src = "/Users/calvin/Desktop/general-Assembly/unit-1/MyGame/KandysPaybackGame/craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png";
+enemySprite.src = "./craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png";
 
 const santaSprite = new Image();
-santaSprite.src = '/Users/calvin/Desktop/general-Assembly/unit-1/MyGame/KandysPaybackGame/creepySanta.png';
+santaSprite.src = './creepySanta.png';
 
 const gifBackground = new Image();
-gifBackground.src = '/Users/calvin/Desktop/general-Assembly/unit-1/MyGame/KandysPaybackGame/backgroundSheet.png';
+gifBackground.src = './backgroundSheet.png';
 gifBackground.id = 'background';
 
 const numberOfTerrorists = 1;
@@ -79,7 +79,7 @@ class AttackRaven {
         this.markedToDelete = false;
 
         this.image = new Image();
-        this.image.src = '/Users/calvin/Desktop/general-Assembly/unit-1/MyGame/KandysPaybackGame/raven.png';
+        this.image.src = './raven.png';
         this.frame = 0;
         this.maxFrame = 4;
         this.timeSinceFlap = 0;
@@ -116,7 +116,7 @@ const raven = new AttackRaven();
 class Enemy {
     constructor(){
         this.image = new Image();
-        this.image.src = '/Users/calvin/Desktop/general-Assembly/unit-1/MyGame/KandysPaybackGame/craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png';
+        this.image.src = './craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png';
         this.width = 598;
         this.height = 1291;
         this.sizeX = this.width / 8;
