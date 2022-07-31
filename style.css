@@ -25,7 +25,8 @@ h1 {
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,255,1) 7%, rgba(233,19,7,1) 13%, rgba(255,255,255,1) 25%, rgba(238,1,1,0.9906337535014006) 35%, rgba(255,255,255,1) 45%, rgba(255,0,16,1) 56%, rgba(255,255,255,1) 64%, rgba(255,0,16,1) 72%, rgba(255,255,255,1) 79%, rgba(255,0,16,1) 86%, rgba(255,255,255,1) 93%, rgba(255,0,16,1) 100%); */
   position: relative;
   width: 600px;
-  left: 25%;
+  left: 50%;
+  transform: translate(-50%);
   
 }
 
@@ -33,3 +34,23 @@ body {
     background: rgb(0,183,255);
     background: linear-gradient(90deg, rgba(0,183,255,1) 0%, rgba(0,0,0,1) 20%, rgba(0,183,255,1) 35%, rgba(255,255,255,1) 50%, rgba(0,183,255,1) 65%, rgba(0,0,0,1) 80%, rgba(0,183,255,1) 100%);
 }
+
+/* #background {
+    width: 900px;
+    height: 650px;
+    background-position: 0px 0px;
+    background: url(backgroundSheet.png);
+    background-repeat: 7;
+    animation: animatedBackground 50s linear infinite alternate;
+
+
+}
+
+@keyframes animatedBackground {
+    from {
+        background-position: 0 0;
+    }
+   to {
+        background-position: 100% 0;
+    }
+} */
