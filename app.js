@@ -6,6 +6,7 @@ ctx.font = '25px Impact';
 const staticCanvasWidth = 900;
 const staticCanvasHeight = 650; 
 console.log(ctx);
+
 let scoreBoard = 0;
 
 const spritePlayer = new Image();
@@ -21,11 +22,11 @@ const gifBackground = new Image();
 gifBackground.src = './backgroundSheet.png';
 gifBackground.id = 'background';
 
-const numberOfTerrorists = 1;
+const numberOfTerrorists = 3;
 const terroristArray = [];
 
 let timeTillNextAttackRaven = 0;
-let ravenInterval = 700;
+let ravenInterval = 1000;
 let lastTime = 0;
 
 
@@ -56,6 +57,7 @@ const player = {
     moving: false
 }
 
+
 const startScreen = {
     active: true
 }
@@ -65,23 +67,23 @@ let backgroundFrameX = 1;
 let ravens = [];
 class AttackRaven {
     constructor(){
-        this.spriteWidth = 271;
-        this.spriteHeight = 194;
+        this.spriteWidth = 225;
+        this.spriteHeight = 320;
         this.sizeModifier = Math.random() * 0.4 + 0.2;
         this.width = this.spriteWidth * this.sizeModifier;
         this.height = this.spriteHeight * this.sizeModifier;
 
         this.xCoord = canvas.width;
-        this.yCoord = Math.random() * 250 + 100;              //* canvas.height - this.height - 100;
+        this.yCoord = Math.random() * 250 + 100;            
         this.xCoordDirection = Math.random() * 5 + 2;
         this.yCoordDirection = Math.random() * 5 - 2.5;
 
         this.markedToDelete = false;
 
         this.image = new Image();
-        this.image.src = './raven.png';
+        this.image.src = './baldEagle.png';
         this.frame = 0;
-        this.maxFrame = 4;
+        this.maxFrame = 2;
         this.timeSinceFlap = 0;
         this.flapInterval = Math.random() * 60 + 100;
 
@@ -99,13 +101,11 @@ class AttackRaven {
             if (this.frame > this.maxFrame) this.frame = 0;
             else this.frame++;
             this.timeSinceFlap = 0;
-            // console.log(deltatime);
         }
 
     }
 
     draw(){
-        // ctx.strokeRect(this.xCoord, this.yCoord, this.width, this.height);
         ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
     }
 }
@@ -119,10 +119,10 @@ class Enemy {
         this.image.src = './craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png';
         this.width = 598;
         this.height = 1291;
-        this.sizeX = this.width / 8;
-        this.sizeY = this.height / 8;
+        this.sizeX = this.width / 10;
+        this.sizeY = this.height / 10;
         this.xCoord = Math.random() * 10 + 1;
-        this.yCoord = canvas.height - this.sizeY - 20;
+        this.yCoord = Math.random() * canvas.height + 400;
         this.speed = Math.random() * 2 + 1;
         this.frameX = 0; 
     }
@@ -163,7 +163,6 @@ for (let i = 0; i < numberOfTerrorists; i++){
 window.addEventListener('keydown', function(event){
         keys[event.key] = true; 
         console.log(keys);
-        // console.log(keys);
 })
 
 window.addEventListener('keyup', function(event){
@@ -177,11 +176,15 @@ window.addEventListener('keyup', function(event){
 
 
 function drawScore(){
+    ctx.fillStyle = 'black';
+    ctx.fillText('Current Score: ' + scoreBoard, 662, 27);
     ctx.fillStyle = 'white';
     ctx.fillText('Current Score: ' + scoreBoard, 665, 30);
 }
 
 function drawHowTo(){
+    ctx.fillStyle = 'black';
+    ctx.fillText('How to Play', 77, 27);
     ctx.fillStyle = 'white';
     ctx.fillText('How to Play', 80, 30);
 }
@@ -209,6 +212,12 @@ function animation(timestamp){
     ctx.fillStyle = 'red';
     ctx.fillRect(300, 0, 5, 100);
     ctx.fillRect(600, 0, 5, 100);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(300, 0, 2, 100);
+    ctx.fillRect(600, 0, 2, 100);
+    ctx.fillRect(305, 0, 2, 100);
+    ctx.fillRect(605, 0, 2, 100);
+    ctx.fillStyle = 'red';
     ctx.fillRect(0, 40, canvas.width, 5);
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 100, canvas.width, 10);
@@ -216,13 +225,17 @@ function animation(timestamp){
         drawScore();
         drawHowTo();
     
-    ctx.drawImage(spritePlayer, 0, 0, player.width, player.height, player.xCoord, player.yCoord, player.sizeX, player.sizeY);
+    const mainPlayer = ctx.drawImage(spritePlayer, 0, 0, player.width, player.height, player.xCoord, player.yCoord, player.sizeX, player.sizeY); 
+    mainPlayer;
+
     terroristArray.forEach(enemy => {
         enemy.update();
         enemy.draw();
     })
     ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
     santa.coordX--;
+
+
     spriteMovementKeys();
 }
 
@@ -236,7 +249,7 @@ function spriteMovementKeys(){
     if (keys['ArrowLeft'] && player.xCoord > 0){
         player.xCoord -= player.speed;
         player.moving = true;
-        console.log(`Arrow Key Right  X: ${player.xCoord} Y: ${player.yCoord}`);
+        console.log(`Arrow Key Left  X: ${player.xCoord} Y: ${player.yCoord}`);
     } else if (keys['ArrowRight'] && player.xCoord < canvas.width - 50){
         player.xCoord += player.speed;
         player.moving = true;
@@ -249,6 +262,22 @@ function spriteMovementKeys(){
         player.yCoord += player.speed;
         player.moving = true;
         console.log(`Arrow Key Down  X:  ${player.xCoord}  Y:  ${player.yCoord}`);
+    } else if (keys['a'] && player.xCoord > 0){
+        player.xCoord -= player.speed;
+        player.moving = true;
+        console.log(`Key A -- X: ${player.xCoord} Y: ${player.yCoord}`);
+    } else if (keys['d'] && player.xCoord < canvas.width - 50){
+        player.xCoord += player.speed;
+        player.moving = true;
+        console.log(`Key D -- X: ${player.xCoord}  Y: ${player.yCoord}`);
+    } else if (keys['w'] && player.yCoord > 350){
+        player.yCoord -= player.speed;
+        player.moving = true;
+        console.log(`Key W -- X:  ${player.xCoord}  Y:  ${player.yCoord}`);
+    } else if (keys["s"] && player.yCoord < canvas.height - player.sizeY){
+        player.yCoord += player.speed;
+        player.moving = true;
+        console.log(`Key S -- X:  ${player.xCoord}  Y:  ${player.yCoord}`);
     }
 }
 
