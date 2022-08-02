@@ -19,8 +19,8 @@ console.log(collisionCtx);
 
 let scoreBoard = 0;
 
-const spritePlayer = new Image();
-spritePlayer.src = "./playerSprites/idle.png";
+const KandySprite = new Image();
+KandySprite.src = "./playerSprites/idle.png";
 
 const enemySprite = new Image();
 enemySprite.src = "./craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png";
@@ -54,18 +54,34 @@ const santa = {
     coordX: 800,
 }
 
-const player = {
-    width: 265,
-    height: 571,
-    xCoord: 300,
-    yCoord: 400,
-    sizeX: 50,
-    sizeY: 112,
-    xFrame: 0,
-    yFrame: 0,
-    speed: 5,
-    moving: false
+// const player = {
+//     width: 265,
+//     height: 571,
+//     xCoord: 300,
+//     yCoord: 400,
+//     sizeX: 50,
+//     sizeY: 112,
+//     xFrame: 0,
+//     yFrame: 0,
+//     speed: 5,
+//     moving: false
+// }
+
+class player {
+    constructor(){
+        this. width = 265;
+        this.height = 571;
+        this.xCoord = 300;  
+        this.yCoord = 300;
+        this.sizeX = 50;
+        this.sizeY = 112;
+        this.xFrame = 0;
+        this.yFrame = 0;
+        this.speed = 5;
+        this.moving = false;
+    }
 }
+const KandyDaKane = new player();
 
 
 const startScreen = {
@@ -97,7 +113,7 @@ class AttackRaven {
         this.timeSinceFlap = 0;
         this.flapInterval = Math.random() * 60 + 100;
 
-    //collision detection
+    // collision detection upon click //
         this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]; // random number 1-255 no decimals
         this.color = 'rgb(' + this.randomColors[0] + ',' + this.randomColors[1] + ',' + this.randomColors[2] + ')';
     }
@@ -120,9 +136,9 @@ class AttackRaven {
 
     draw(){
         collisionCtx.fillStyle = this.color;
-        collisionCtx.fillRect(300, 300, 100, 100);
+        collisionCtx.fillRect(300, 300, 300, 300);
         collisionCtx.fillRect(this.xCoord, this.yCoord, this.width, this.height);
-        // ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
+        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
     }
 }
 
@@ -143,16 +159,16 @@ class Enemy {
         this.frameX = 0; 
     }
     update(){
-         if (this.xCoord < player.xCoord && this.yCoord > player.yCoord){// upward  right angle
+         if (this.xCoord < KandyDaKane.xCoord && this.yCoord > KandyDaKane.yCoord){// upward  right angle
             this.xCoord++;
             this.yCoord--;
-        } else if (this.xCoord > player.xCoord && this.yCoord < player.yCoord){// down left angle
+        } else if (this.xCoord > KandyDaKane.xCoord && this.yCoord < KandyDaKane.yCoord){// down left angle
             this.xCoord--;
             this.yCoord++;
-        } else if (this.xCoord > player.xCoord && this.yCoord > player.yCoord){// up left angle
+        } else if (this.xCoord > KandyDaKane.xCoord && this.yCoord > KandyDaKane.yCoord){// up left angle
             this.xCoord--;
             this.yCoord--;
-        } else if (this.xCoord < player.xCoord && this.yCoord < player.yCoord){// down right angle
+        } else if (this.xCoord < KandyDaKane.xCoord && this.yCoord < KandyDaKane.yCoord){// down right angle
             this.xCoord++;
             this.yCoord++;
         }
@@ -186,11 +202,14 @@ window.addEventListener('keyup', function(event){
 
 });
 
+
 window.addEventListener('mousedown', function(event){
     const detectPixelColor = collisionCtx.getImageData(event.x, event.y, 1, 1);
     // console.log(event.x, event.y);
     // console.log(raven.color);
+    if (detectPixelColor.data[0] !== 0 && detectPixelColor.data[1] !== 0 && detectPixelColor.data[2] !== 0){
     console.log(detectPixelColor);
+    }
 });
 
          // END EVENT LISTENERS //
@@ -220,7 +239,7 @@ function animation(timestamp){
     requestAnimationFrame(animation);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
-    // ctx.drawImage(gifBackground, backgroundFrameX, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(gifBackground, backgroundFrameX, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     timeTillNextAttackRaven += deltatime;
@@ -228,7 +247,7 @@ function animation(timestamp){
         ravens.push(new AttackRaven());
         timeTillNextAttackRaven = 0;
         ravens.sort(function(a, b) {
-            return a.width - b.width;
+            return a.width - b.width;// draws smaller birds first so they are dynamically layered
         });
     };
     [...ravens].forEach(object => object.update(deltatime));
@@ -260,7 +279,7 @@ function animation(timestamp){
 
            // END STYLING //
     
-    const mainPlayer = ctx.drawImage(spritePlayer, 0, 0, player.width, player.height, player.xCoord, player.yCoord, player.sizeX, player.sizeY); 
+    const mainPlayer = ctx.drawImage(KandySprite, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
     mainPlayer;
 
     terroristArray.forEach(enemy => {
@@ -281,38 +300,38 @@ animation(0);
 
 
 function spriteMovementKeys(){
-    if (keys['ArrowLeft'] && player.xCoord > 0){
-        player.xCoord -= player.speed;
-        player.moving = true;
-        console.log(`Arrow Key Left  X: ${player.xCoord} Y: ${player.yCoord}`);
-    } else if (keys['ArrowRight'] && player.xCoord < canvas.width - 50){
-        player.xCoord += player.speed;
-        player.moving = true;
-        console.log(`Arrow Key Right  X: ${player.xCoord}  Y: ${player.yCoord}`);
-    } else if (keys['ArrowUp'] && player.yCoord > 350){
-        player.yCoord -= player.speed;
-        player.moving = true;
-        console.log(`Arrow Key Up  X:  ${player.xCoord}  Y:  ${player.yCoord}`);
-    } else if (keys["ArrowDown"] && player.yCoord < canvas.height - player.sizeY){
-        player.yCoord += player.speed;
-        player.moving = true;
-        console.log(`Arrow Key Down  X:  ${player.xCoord}  Y:  ${player.yCoord}`);
-    } else if (keys['a'] && player.xCoord > 0){
-        player.xCoord -= player.speed;
-        player.moving = true;
-        console.log(`Key A -- X: ${player.xCoord} Y: ${player.yCoord}`);
-    } else if (keys['d'] && player.xCoord < canvas.width - 50){
-        player.xCoord += player.speed;
-        player.moving = true;
-        console.log(`Key D -- X: ${player.xCoord}  Y: ${player.yCoord}`);
-    } else if (keys['w'] && player.yCoord > 350){
-        player.yCoord -= player.speed;
-        player.moving = true;
-        console.log(`Key W -- X:  ${player.xCoord}  Y:  ${player.yCoord}`);
-    } else if (keys["s"] && player.yCoord < canvas.height - player.sizeY){
-        player.yCoord += player.speed;
-        player.moving = true;
-        console.log(`Key S -- X:  ${player.xCoord}  Y:  ${player.yCoord}`);
+    if (keys['ArrowLeft'] && KandyDaKane.xCoord > 0){
+        KandyDaKane.xCoord -= KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Arrow Key Left  X: ${KandyDaKane.xCoord} Y: ${KandyDaKane.yCoord}`);
+    } else if (keys['ArrowRight'] && KandyDaKane.xCoord < canvas.width - 50){
+        KandyDaKane.xCoord += KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Arrow Key Right  X: ${KandyDaKane.xCoord}  Y: ${KandyDaKane.yCoord}`);
+    } else if (keys['ArrowUp'] && KandyDaKane.yCoord > 350){
+        KandyDaKane.yCoord -= KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Arrow Key Up  X:  ${KandyDaKane.xCoord}  Y:  ${KandyDaKane.yCoord}`);
+    } else if (keys["ArrowDown"] && KandyDaKane.yCoord < canvas.height - KandyDaKane.sizeY){
+        KandyDaKane.yCoord += KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Arrow Key Down  X:  ${KandyDaKane.xCoord}  Y:  ${KandyDaKane.yCoord}`);
+    } else if (keys['a'] && KandyDaKane.xCoord > 0){
+        KandyDaKane.xCoord -= KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Key A -- X: ${KandyDaKane.xCoord} Y: ${KandyDaKane.yCoord}`);
+    } else if (keys['d'] && KandyDaKane.xCoord < canvas.width - 50){
+        KandyDaKane.xCoord += KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Key D -- X: ${KandyDaKane.xCoord}  Y: ${KandyDaKane.yCoord}`);
+    } else if (keys['w'] && KandyDaKane.yCoord > 350){
+        KandyDaKane.yCoord -= KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Key W -- X:  ${KandyDaKane.xCoord}  Y:  ${KandyDaKane.yCoord}`);
+    } else if (keys["s"] && KandyDaKane.yCoord < canvas.height - KandyDaKane.sizeY){
+        KandyDaKane.yCoord += KandyDaKane.speed;
+        KandyDaKane.moving = true;
+        console.log(`Key S -- X:  ${KandyDaKane.xCoord}  Y:  ${KandyDaKane.yCoord}`);
     }
 }
 

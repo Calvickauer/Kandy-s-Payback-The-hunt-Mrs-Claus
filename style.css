@@ -38,7 +38,7 @@ body {
 
 
 #collisionCanvas {
-     /* background: rgb(0,0,0,0); was only there to check position */
+    background: red; 
 
     width: 900;
     height: 650;
