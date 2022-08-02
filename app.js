@@ -1,11 +1,21 @@
 const canvas = document.getElementById('canvasMain');
+const ctx = canvas.getContext('2d');
 canvas.width = 900;
 canvas.height = 650;
-const ctx = canvas.getContext('2d');
 ctx.font = '25px Impact';
+
 const staticCanvasWidth = 900;
 const staticCanvasHeight = 650; 
+
 console.log(ctx);
+
+const collisionCanvas = document.getElementById('collisionCanvas');
+const collisionCtx = collisionCanvas.getContext('2d');
+collisionCanvas.width = canvas.width;
+collisionCanvas.height = canvas.height;
+
+console.log(collisionCtx);
+
 
 let scoreBoard = 0;
 
@@ -26,7 +36,7 @@ const numberOfTerrorists = 3;
 const terroristArray = [];
 
 let timeTillNextAttackRaven = 0;
-let ravenInterval = 1000;
+let ravenInterval = 2000;
 let lastTime = 0;
 
 
@@ -87,6 +97,9 @@ class AttackRaven {
         this.timeSinceFlap = 0;
         this.flapInterval = Math.random() * 60 + 100;
 
+    //collision detection
+        this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]; // random number 1-255 no decimals
+        this.color = 'rgb(' + this.randomColors[0] + ',' + this.randomColors[1] + ',' + this.randomColors[2] + ')';
     }
 
     update(deltatime){
@@ -106,7 +119,10 @@ class AttackRaven {
     }
 
     draw(){
-        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
+        collisionCtx.fillStyle = this.color;
+        collisionCtx.fillRect(300, 300, 100, 100);
+        collisionCtx.fillRect(this.xCoord, this.yCoord, this.width, this.height);
+        // ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
     }
 }
 
@@ -163,12 +179,19 @@ for (let i = 0; i < numberOfTerrorists; i++){
 window.addEventListener('keydown', function(event){
         keys[event.key] = true; 
         console.log(keys);
-})
+});
 
 window.addEventListener('keyup', function(event){
     delete keys[event.key];
 
-})
+});
+
+window.addEventListener('mousedown', function(event){
+    const detectPixelColor = collisionCtx.getImageData(event.x, event.y, 1, 1);
+    // console.log(event.x, event.y);
+    // console.log(raven.color);
+    console.log(detectPixelColor);
+});
 
          // END EVENT LISTENERS //
 
@@ -180,33 +203,41 @@ function drawScore(){
     ctx.fillText('Current Score: ' + scoreBoard, 662, 27);
     ctx.fillStyle = 'white';
     ctx.fillText('Current Score: ' + scoreBoard, 665, 30);
-}
+};
 
 function drawHowTo(){
     ctx.fillStyle = 'black';
     ctx.fillText('How to Play', 77, 27);
     ctx.fillStyle = 'white';
     ctx.fillText('How to Play', 80, 30);
-}
+};
+
+
 
            // ANIMATION LOOP //
 
 function animation(timestamp){
     requestAnimationFrame(animation);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(gifBackground, backgroundFrameX, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
+    collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.drawImage(gifBackground, backgroundFrameX, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     timeTillNextAttackRaven += deltatime;
     if (timeTillNextAttackRaven > ravenInterval){
         ravens.push(new AttackRaven());
         timeTillNextAttackRaven = 0;
+        ravens.sort(function(a, b) {
+            return a.width - b.width;
+        });
     };
     [...ravens].forEach(object => object.update(deltatime));
     [...ravens].forEach(object => object.draw());
     
     ravens = ravens.filter(object => !object.markedToDelete);
     
+         // STYLING FOR SCORE AND MENU //
+
     ctx.fillStyle = 'darkgreen';
     ctx.fillRect(0, 0, canvas.width, 100);
     ctx.fillStyle = 'red';
@@ -220,10 +251,14 @@ function animation(timestamp){
     ctx.fillStyle = 'red';
     ctx.fillRect(0, 40, canvas.width, 5);
     ctx.fillStyle = 'black';
+    ctx.fillRect(0, 40, canvas.width, 2);
+    ctx.fillRect(0, 45, canvas.width, 2);
     ctx.fillRect(0, 100, canvas.width, 10);
     
         drawScore();
         drawHowTo();
+
+           // END STYLING //
     
     const mainPlayer = ctx.drawImage(spritePlayer, 0, 0, player.width, player.height, player.xCoord, player.yCoord, player.sizeX, player.sizeY); 
     mainPlayer;
