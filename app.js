@@ -102,8 +102,9 @@ const startScreen = {
 }
 let backgroundFrameX = 1;
 
-// CLASSES //
 let ravens = [];
+// CLASSES //
+
 class AttackRaven {
     constructor(){
         this.spriteWidth = 225;
@@ -114,7 +115,7 @@ class AttackRaven {
 
         this.xCoord = canvas.width;
         this.yCoord = Math.random() * 250 + 100;            
-        this.xCoordDirection = Math.random() * 5 + 2;
+        this.xCoordDirection = Math.random() * 10 + 6;
         this.yCoordDirection = Math.random() * 5 - 2.5;
 
         this.markedToDelete = false;
@@ -132,7 +133,7 @@ class AttackRaven {
     }
 
     update(deltatime){
-        if (this.yCoord < 120 || this.yCoord > 300){
+        if (this.yCoord < 50 || this.yCoord > 300){
             this.yCoordDirection = this.yCoordDirection * -1
         };
         this.xCoord -= this.xCoordDirection;
@@ -149,8 +150,8 @@ class AttackRaven {
 
     draw(){
         collisionCtx.fillStyle = this.color;
-        collisionCtx.fillRect(300, 300, 300, 300);
-        collisionCtx.fillRect(this.xCoord, this.yCoord, this.width, this.height);
+        // collisionCtx.fillRect(500, 300, 300, 300);
+        // collisionCtx.fillRect(this.xCoord, this.yCoord, this.width, this.height);
         ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
     }
 }
@@ -229,14 +230,42 @@ window.addEventListener('keyup', function(event){
 });
 
 
-window.addEventListener('mousedown', function(event){
-    const detectPixelColor = collisionCtx.getImageData(event.x, event.y, 1, 1);
-    // console.log(event.x, event.y);
-    // console.log(raven.color);
-    if (detectPixelColor.data[0] !== 0 && detectPixelColor.data[1] !== 0 && detectPixelColor.data[2] !== 0){
-    console.log(detectPixelColor);
-    }
-});
+// collisionCanvas.addEventListener('mousedown', function(event){
+//     ravens.forEach((raven)=>{
+//         if (event.offsetX > raven.xCoord && 
+//             event.offsetY > raven.yCoord &&
+//              event.offsetX < raven.xCoord + raven.width &&
+//              event.offsetY < raven.yCoord + raven.height
+//              ){
+//                  console.log('hit');
+//             }
+//         })
+//     });
+    collisionCanvas.addEventListener('mousedown', function(event){
+        ravens.forEach((raven)=>{
+            if (event.offsetX > raven.xCoord && 
+                event.offsetY > raven.yCoord &&
+                 event.offsetX < raven.xCoord + raven.width + 20 &&
+                 event.offsetY < raven.yCoord + raven.height
+                 ){
+        
+                    console.log(raven);
+                    raven.markedToDelete = true;
+                     console.log('hit');
+                     scoreBoard = scoreBoard + 10;
+                     
+                }
+            })
+        });
+            
+        
+        // const detectPixelColor = collisionCtx.getImageData(event.x, event.y, 1, 1);
+        // // console.log(event.x, event.y);
+        // // console.log(raven.color);
+        // if (detectPixelColor.data[0] !== 0 && detectPixelColor.data[1] !== 0 && detectPixelColor.data[2] !== 0){
+            // console.log(detectPixelColor);
+            // }
+
 
 // END EVENT LISTENERS //
 
@@ -296,7 +325,7 @@ function animation(timestamp){
     [...ravens].forEach(object => object.update(deltatime));
     [...ravens].forEach(object => object.draw());
     
-    ravens = ravens.filter(object => !object.markedToDelete);
+    ravens = ravens.filter(object => !object.markedToDelete);// would like insight on this line
     
          // STYLING FOR SCORE AND MENU //
 
