@@ -1,4 +1,6 @@
 window.addEventListener('load', function(){
+
+
 const canvas = document.getElementById('canvasMain');
 const ctx = canvas.getContext('2d');
 canvas.width = 900;
@@ -36,6 +38,11 @@ const gifBackground = new Image();
 gifBackground.src = './backgroundSheet.png';
 gifBackground.id = 'background';
 
+const startScreenBackground = new Image();
+startScreenBackground.src = 'startScreenIMG.png';
+
+
+
 const numberOfTerrorists = 3;
 const terroristArray = [];
 
@@ -46,7 +53,10 @@ let lastTime = 0;
 
 const keys = [];
 
-
+const startGameDimensions = {
+    height: 404,
+    width: 316
+}
 
 const background = {
     height: 342,
@@ -98,9 +108,9 @@ class player {
 const KandyDaKane = new player();
 
 
-const startScreen = {
-    active: true
-}
+// const startScreen = {
+//     active: true
+// }
 let backgroundFrameX = 1;
 
 let ravens = [];
@@ -290,19 +300,31 @@ window.addEventListener('keyup', function(event){
                     explosions.push(new Explosion(raven.xCoord, raven.yCoord, raven.width));
                      console.log('hit');
                      scoreBoard = scoreBoard + 7;
-                     console.log(explosions);    
+                     console.log(explosions);
                 }
             })
         });
-            
-        
-        // const detectPixelColor = collisionCtx.getImageData(event.x, event.y, 1, 1);
-        // // console.log(event.x, event.y);
-        // // console.log(raven.color);
-        // if (detectPixelColor.data[0] !== 0 && detectPixelColor.data[1] !== 0 && detectPixelColor.data[2] !== 0){
-            // console.log(detectPixelColor);
-            // }
+    
 
+             
+    
+
+
+    function backgroundStartScreen(){
+        if (!startGame){
+            ctx.drawImage(startScreenBackground, 0, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
+        }
+          }
+
+    let startGame = false;
+    canvas.addEventListener('click', function(event){
+        console.log(event.x, event.y);
+        if (!startGame){
+            startGame = true;
+            console.log(true);
+        }
+    })
+        
 
 // END EVENT LISTENERS //
 
@@ -310,13 +332,13 @@ window.addEventListener('keyup', function(event){
 
 
 
-function displayTextStatus(){
+// function displayTextStatus(){
 
-}
+// }
 
-function enemyHandler(){
+// function enemyHandler(){
 
-}
+// }
 
 function drawScore(){
     ctx.fillStyle = 'black';
@@ -364,7 +386,6 @@ function drawStart(){
 
 
            // ANIMATION LOOP //
-
 function animation(timestamp){
     requestAnimationFrame(animation);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -385,8 +406,21 @@ function animation(timestamp){
     
     ravens = ravens.filter(object => !object.markedToDelete);// would like insight on this line
     explosions = explosions.filter(object => !object.markedToDelete);
-         // STYLING FOR SCORE AND MENU //
 
+    
+    const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
+    KandyCane;
+    
+    terroristArray.forEach(enemy => {
+        enemy.update();
+        enemy.draw();
+    })
+    ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
+    santa.coordX--;
+
+
+    backgroundStartScreen();
+    // STYLING FOR SCORE AND MENU //
     ctx.fillStyle = 'darkgreen';
     ctx.fillRect(0, 0, canvas.width, 100);
     ctx.fillStyle = 'red';
@@ -413,21 +447,15 @@ function animation(timestamp){
 
            // END STYLING //
     
-    const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
-    KandyCane;
-
-    terroristArray.forEach(enemy => {
-        enemy.update();
-        enemy.draw();
-    })
-    ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
-    santa.coordX--;
-
 
     spriteMovementKeys();
 }
 
 animation(0);
+
+// function startGameButton(){
+
+// }
 
 
              // END  OF ANIMATION LOOP //
