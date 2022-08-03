@@ -197,6 +197,35 @@ class Enemy {
     }
 }
 
+
+let explosions = [];
+class Explosion {
+    constructor(xCoord, yCoord, imageSize){
+        this.image = new Image();
+        this.image.src = 'blood.png';
+        this.spriteHeight = 512;
+        this.spriteWidth = 512;
+        this.size = imageSize;
+        this.x = x;
+        this.y = y;
+        this.frame = 0;
+        this.sound = new Audio();
+        this.sound.src = 'shotgun.wav';
+        this.timeSinceLastFrame = 0;
+        this.frameInterval = 200;
+    }
+    update(deltatime){
+        if (this.frame === 0) this.sound.play();
+        this.timeSinceLastFrame += deltatime;
+        if (this.timeSinceLastFrame > this.frameInterval){
+            this.frame++;
+
+        }
+
+    }
+}
+
+
 for (let i = 0; i < numberOfTerrorists; i++){
     terroristArray.push(new Enemy());
 }
@@ -252,7 +281,7 @@ window.addEventListener('keyup', function(event){
                     console.log(raven);
                     raven.markedToDelete = true;
                      console.log('hit');
-                     scoreBoard = scoreBoard + 10;
+                     scoreBoard = scoreBoard + 7;
                      
                 }
             })
