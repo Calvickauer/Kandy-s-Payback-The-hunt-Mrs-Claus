@@ -12,11 +12,12 @@ console.log(ctx);
 
 const collisionCanvas = document.getElementById('collisionCanvas');
 const collisionCtx = collisionCanvas.getContext('2d');
-collisionCanvas.width = canvas.width;
-collisionCanvas.height = canvas.height;
+collisionCanvas.width = 950;
+collisionCanvas.height = 700;
 
 console.log(collisionCtx);
 
+let healthBar = 100;
 
 let scoreBoard = 0;
 
@@ -212,7 +213,7 @@ class Explosion {
         this.sound = new Audio();
         this.sound.src = 'shotgun.wav';
         this.timeSinceLastFrame = 0;
-        this.frameInterval = 200;
+        this.frameInterval = 300;
         this.markedToDelete = false;
     }
     update(deltatime){
@@ -226,7 +227,7 @@ class Explosion {
     }
     draw(){
         ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, 
-            this.spriteHeight, this.x, this.y, this.size, this.size);
+            this.spriteHeight, this.x, this.y + this.size/8, this.size, this.size);
     }
     }
 
@@ -276,7 +277,7 @@ window.addEventListener('keyup', function(event){
 //             }
 //         })
 //     });
-    collisionCanvas.addEventListener('mousedown', function(event){
+    canvas.addEventListener('mousedown', function(event){
         ravens.forEach((raven)=>{
             if (event.offsetX > raven.xCoord && 
                 event.offsetY > raven.yCoord &&
@@ -289,8 +290,7 @@ window.addEventListener('keyup', function(event){
                     explosions.push(new Explosion(raven.xCoord, raven.yCoord, raven.width));
                      console.log('hit');
                      scoreBoard = scoreBoard + 7;
-                     console.log(explosions);
-                     
+                     console.log(explosions);    
                 }
             })
         });
@@ -320,24 +320,45 @@ function enemyHandler(){
 
 function drawScore(){
     ctx.fillStyle = 'black';
-    ctx.fillText('Current Score: ' + scoreBoard, 662, 27);
+    ctx.fillText('Current Score:     ' + scoreBoard, 662, 27);
     ctx.fillStyle = 'white';
-    ctx.fillText('Current Score: ' + scoreBoard, 665, 30);
+    ctx.fillText('Current Score:     ' + scoreBoard, 665, 30);
 }
 
 function drawHowTo(){
     ctx.fillStyle = 'black';
     ctx.fillText('How to Play', 77, 27);
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'lightblue';
     ctx.fillText('How to Play', 80, 30);
+}
+
+function drawReset(){
+    ctx.fillStyle = 'black';
+    ctx.fillText('Reset Game', 77, 80);
+    ctx.fillStyle = 'orange';
+    ctx.fillText('Reset Game', 80, 83);
 }
 
 function drawHealth(){
     ctx.fillStyle = 'black';
-    ctx.fillText('Health Level:', 662, 80);
+    ctx.fillText('Health Level:     ' + healthBar, 662, 80);
     ctx.fillStyle = 'white';
-    ctx.fillText('Health Level:', 665, 83);
+    ctx.fillText('Health Level:     ' + healthBar, 665, 83);
 
+}
+
+function drawPause(){
+    ctx.fillStyle = 'black';
+    ctx.fillText('Pause Game', 390, 80);
+    ctx.fillStyle = 'orange';
+    ctx.fillText('Pause Game', 390, 83);
+}
+
+function drawStart(){
+    ctx.fillStyle = 'black';
+    ctx.fillText('Start Game', 390, 27);
+    ctx.fillStyle = 'orange';
+    ctx.fillText('Start Game', 390, 30);
 }
 
 
@@ -386,6 +407,9 @@ function animation(timestamp){
         drawScore();
         drawHowTo();
         drawHealth();
+        drawPause();
+        drawStart();
+        drawReset();
 
            // END STYLING //
     

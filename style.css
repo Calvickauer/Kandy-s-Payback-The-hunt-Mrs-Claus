@@ -1,6 +1,6 @@
 #canvasMain {
-    border: 5px groove red;
-   z-index: 1;
+    border: 5px groove rgb(8, 6, 6);
+   /* z-index: 1; */
     width: 900;
     height: 650;
     position: absolute;
@@ -38,8 +38,10 @@ body {
 
 
 #collisionCanvas {
-    /* background: red;  */
-z-index: 10;
+    background: rgb(255,0,0);
+    background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,255,1) 7%, rgba(233,19,7,1) 13%, rgba(255,255,255,1) 25%, rgba(238,1,1,0.9906337535014006) 35%, rgba(255,255,255,1) 45%, rgba(255,0,16,1) 56%, rgba(255,255,255,1) 64%, rgba(255,0,16,1) 72%, rgba(255,255,255,1) 79%, rgba(255,0,16,1) 86%, rgba(255,255,255,1) 93%, rgba(255,0,16,1) 100%);
+    border: 5px groove purple;
+/* z-index: 10; */
     width: 900;
     height: 650;
     position: absolute;
