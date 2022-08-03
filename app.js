@@ -1,3 +1,4 @@
+window.addEventListener('load', function(){
 const canvas = document.getElementById('canvasMain');
 const ctx = canvas.getContext('2d');
 canvas.width = 900;
@@ -19,8 +20,10 @@ console.log(collisionCtx);
 
 let scoreBoard = 0;
 
-const KandySprite = new Image();
-KandySprite.src = "./playerSprites/idle.png";
+const rightKandySprite = new Image();
+rightKandySprite.src = "playerSprites/DaRealKane.png";
+const leftKandySprite = new Image();
+leftKandySprite.src = 'playerSprites/DaRealKane copy.png';
 
 const enemySprite = new Image();
 enemySprite.src = "./craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png";
@@ -69,18 +72,28 @@ const santa = {
 
 class player {
     constructor(){
-        this. width = 265;
-        this.height = 571;
+        this.image = rightKandySprite;
+        this. width = 216;
+        this.height = 233;
         this.xCoord = 300;  
         this.yCoord = 300;
-        this.sizeX = 50;
-        this.sizeY = 112;
+        this.sizeX = this.width/1.8;
+        this.sizeY = this.height/1.8;
         this.xFrame = 0;
         this.yFrame = 0;
         this.speed = 5;
         this.moving = false;
     }
+
+    update(){
+
+    }
+
+    draw(){
+
+    }
 }
+
 const KandyDaKane = new player();
 
 
@@ -159,6 +172,8 @@ class Enemy {
         this.frameX = 0; 
     }
     update(){
+
+        if((KandyDaKane.xCoord - this.xCoord) < 300){// stops enemy from constant attack
          if (this.xCoord < KandyDaKane.xCoord && this.yCoord > KandyDaKane.yCoord){// upward  right angle
             this.xCoord++;
             this.yCoord--;
@@ -172,6 +187,7 @@ class Enemy {
             this.xCoord++;
             this.yCoord++;
         }
+    }
 
     }
     draw(){
@@ -180,12 +196,22 @@ class Enemy {
     }
 }
 
-
-
-
 for (let i = 0; i < numberOfTerrorists; i++){
     terroristArray.push(new Enemy());
 }
+
+
+// class InputHandler {
+//     constructor(){
+//         this.keys = [];
+//         window.addEventListener('keydown', event => {
+//             if (event.key === = true; 
+//             console.log(keys);
+//     });
+//     }
+// }
+
+// const input = new InputHandler();
 
           // END OF CLASSES // 
 
@@ -194,7 +220,7 @@ for (let i = 0; i < numberOfTerrorists; i++){
            // EVENT LISTENERS  //
 window.addEventListener('keydown', function(event){
         keys[event.key] = true; 
-        console.log(keys);
+        
 });
 
 window.addEventListener('keyup', function(event){
@@ -212,24 +238,41 @@ window.addEventListener('mousedown', function(event){
     }
 });
 
-         // END EVENT LISTENERS //
+// END EVENT LISTENERS //
 
-         // FUNCTION //
+// FUNCTIONS //
 
+
+
+function displayTextStatus(){
+
+}
+
+function enemyHandler(){
+
+}
 
 function drawScore(){
     ctx.fillStyle = 'black';
     ctx.fillText('Current Score: ' + scoreBoard, 662, 27);
     ctx.fillStyle = 'white';
     ctx.fillText('Current Score: ' + scoreBoard, 665, 30);
-};
+}
 
 function drawHowTo(){
     ctx.fillStyle = 'black';
     ctx.fillText('How to Play', 77, 27);
     ctx.fillStyle = 'white';
     ctx.fillText('How to Play', 80, 30);
-};
+}
+
+function drawHealth(){
+    ctx.fillStyle = 'black';
+    ctx.fillText('Health Level:', 662, 80);
+    ctx.fillStyle = 'white';
+    ctx.fillText('Health Level:', 665, 83);
+
+}
 
 
 
@@ -276,11 +319,12 @@ function animation(timestamp){
     
         drawScore();
         drawHowTo();
+        drawHealth();
 
            // END STYLING //
     
-    const mainPlayer = ctx.drawImage(KandySprite, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
-    mainPlayer;
+    const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
+    KandyCane;
 
     terroristArray.forEach(enemy => {
         enemy.update();
@@ -298,15 +342,20 @@ animation(0);
 
              // END  OF ANIMATION LOOP //
 
+            // some Functions //
+
+
 
 function spriteMovementKeys(){
     if (keys['ArrowLeft'] && KandyDaKane.xCoord > 0){
         KandyDaKane.xCoord -= KandyDaKane.speed;
         KandyDaKane.moving = true;
+        KandyDaKane.image = leftKandySprite;
         console.log(`Arrow Key Left  X: ${KandyDaKane.xCoord} Y: ${KandyDaKane.yCoord}`);
     } else if (keys['ArrowRight'] && KandyDaKane.xCoord < canvas.width - 50){
         KandyDaKane.xCoord += KandyDaKane.speed;
         KandyDaKane.moving = true;
+        KandyDaKane.image = rightKandySprite;
         console.log(`Arrow Key Right  X: ${KandyDaKane.xCoord}  Y: ${KandyDaKane.yCoord}`);
     } else if (keys['ArrowUp'] && KandyDaKane.yCoord > 350){
         KandyDaKane.yCoord -= KandyDaKane.speed;
@@ -334,6 +383,19 @@ function spriteMovementKeys(){
         console.log(`Key S -- X:  ${KandyDaKane.xCoord}  Y:  ${KandyDaKane.yCoord}`);
     }
 }
+
+
+
+
+
+
+
+
+
+});// end of load event listener all data within  //
+
+
+
 
 // backgroundLoop(31); //COMMENTED OUT TEMPORARILY 
 //     ctx.fillRect(0, 162.5, canvas.width, 10); //Y quardant 1

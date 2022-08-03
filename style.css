@@ -38,7 +38,7 @@ body {
 
 
 #collisionCanvas {
-    background: red; 
+    /* background: red;  */
 
     width: 900;
     height: 650;
