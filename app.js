@@ -206,24 +206,30 @@ class Explosion {
         this.spriteHeight = 512;
         this.spriteWidth = 512;
         this.size = imageSize;
-        this.x = x;
-        this.y = y;
+        this.x = xCoord;
+        this.y = yCoord;
         this.frame = 0;
         this.sound = new Audio();
         this.sound.src = 'shotgun.wav';
         this.timeSinceLastFrame = 0;
         this.frameInterval = 200;
+        this.markedToDelete = false;
     }
     update(deltatime){
         if (this.frame === 0) this.sound.play();
         this.timeSinceLastFrame += deltatime;
         if (this.timeSinceLastFrame > this.frameInterval){
             this.frame++;
-
+            if (this.frame > 5) this.markedToDelete = true;
         }
-
+    
     }
-}
+    draw(){
+        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, 
+            this.spriteHeight, this.x, this.y, this.size, this.size);
+    }
+    }
+
 
 
 for (let i = 0; i < numberOfTerrorists; i++){
@@ -280,8 +286,10 @@ window.addEventListener('keyup', function(event){
         
                     console.log(raven);
                     raven.markedToDelete = true;
+                    explosions.push(new Explosion(raven.xCoord, raven.yCoord, raven.width));
                      console.log('hit');
                      scoreBoard = scoreBoard + 7;
+                     console.log(explosions);
                      
                 }
             })
@@ -351,11 +359,11 @@ function animation(timestamp){
             return a.width - b.width;// draws smaller birds first so they are dynamically layered
         });
     };
-    [...ravens].forEach(object => object.update(deltatime));
-    [...ravens].forEach(object => object.draw());
+    [...ravens, ...explosions].forEach(object => object.update(deltatime));
+    [...ravens, ...explosions].forEach(object => object.draw());
     
     ravens = ravens.filter(object => !object.markedToDelete);// would like insight on this line
-    
+    explosions = explosions.filter(object => !object.markedToDelete);
          // STYLING FOR SCORE AND MENU //
 
     ctx.fillStyle = 'darkgreen';
