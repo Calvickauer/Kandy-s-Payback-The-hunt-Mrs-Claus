@@ -29,6 +29,9 @@ rightKandySprite.src = "playerSprites/DaRealKane.png";
 const leftKandySprite = new Image();
 leftKandySprite.src = 'playerSprites/DaRealKane copy.png';
 
+const pauseImage = new Image();
+pauseImage.src = 'PauseIMG.png';
+
 const enemySprite = new Image();
 enemySprite.src = "./craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png";
 
@@ -98,22 +101,24 @@ class player {
    
 
 
-        document.addEventListener('keydown', this.keydown);
-        document.addEventListener('keyup', this.keyup);
+        // document.addEventListener('keydown', this.keydown);
+        // document.addEventListener('keyup', this.keyup);
     }
 
 
-    keydown = (event) => {
-        if(event.key === 'Space'){
-            // this.gunShot = true;
-        }
-    };
+    // keydown = (event) => {
+    //     if(event.key === 'Space'){
+    //         console.log('helloooooo')
+    //         // this.gunShot = true;
+    //     }
+    // };
 
-    keyup = (event) => {
-        if(event.key === 'Space'){
-            // this.gunShot = false;
-        }
-    };
+    // keyup = (event) => {
+    //     if(event.key === 'Space'){
+    //         console.log('helloooooo')
+    //         // this.gunShot = false;
+    //     }
+    // };
 
 }
 
@@ -128,9 +133,9 @@ const bulletsArrayRight = [];
 class Gunshot{
     constructor(){
         this.shotActive = false;
-        this.xCoordLeft = KandyDaKane.xCoord + 7;
-        this.xCoordRight = KandyDaKane.xCoord + 103;
-        this.yCoord = KandyDaKane.yCoord + 52;
+        this.xCoordLeft = KandyDaKane.xCoord + 12;
+        this.xCoordRight = KandyDaKane.xCoord + 98;
+        this.yCoord = KandyDaKane.yCoord + 53;
         // this.bulletSpeed = 5;
         this.width = 10;
         this.height = 3;
@@ -378,27 +383,32 @@ window.addEventListener('keyup', function(event){
           }
 
     let startGame = false;
-
+    let pause = false;
 
     canvas.addEventListener('click', function(event){
         console.log("offsetX", event.offsetX, "offsetY", event.offsetY, "X", event.x, "Y", event.y, "pageX", event.pageX, "pageY", event.pageY, "clientX", event.clientX, "clientY", event.clientY);
-        if(event.x > 439 && event.x < 732 && event.y > 157 && event.y < 197){
+        if(event.offsetX > 308 && event.offsetX < 601 && event.offsetY > 2 && event.offsetY < 43){
             console.log('Start Game button Pressed');
+            pause = false;
+            console.log('not paused');
         if (!startGame){
             startGame = true;
             console.log(true);
 
 
         }
-    } else if (event.x > 134 && event.x < 432 && event.y > 157 && event.y < 197){
+    } else if (event.offsetX > 1 && event.offsetX < 301 && event.offsetY > 2 && event.offsetY < 43){
         console.log('how to button Pressed');
 
 
-    } else if ( event.x > 439 && event.x < 732 && event.y > 203 && event.y < 254){
+    } else if ( event.offsetX > 309 && event.offsetX < 600 && event.offsetY > 51 && event.offsetY < 102){
         console.log('Pause Button Pressed');
+        pause = true;
+        console.log('paused');
 
 
-    } else if (event.x > 134 && event.x < 432 && event.y > 203 && event.y < 255){
+
+    } else if (event.offsetX > 1 && event.offsetX < 301 && event.offsetY > 51 && event.offsetY < 103){
         console.log('reset button pressed');
 
 
@@ -481,7 +491,9 @@ function animation(timestamp){
             return a.width - b.width;// draws smaller birds first so they are dynamically layered
         });
     };
-    [...ravens, ...explosions].forEach(object => object.update(deltatime));
+    if(!pause){
+        [...ravens, ...explosions].forEach(object => object.update(deltatime));
+    }
     [...ravens, ...explosions].forEach(object => object.draw());
     
     ravens = ravens.filter(object => !object.markedToDelete);// would like insight on this line
@@ -489,57 +501,63 @@ function animation(timestamp){
     // terroristArray = terroristArray.filter(object => !object.markedToDelete);
     
     if (startGame){
-    terroristArray.forEach(enemy => {
-        enemy.update();
-        enemy.draw();
-    })
-}
+        terroristArray.forEach(enemy => {
+            if(!pause){
+                enemy.update();
+            }
+            enemy.draw();
+        })
+    }
     const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
     KandyCane;
-
+    
     if (KandyDaKane.gunOrientationLeft){
         if(Gunshot.shotActive){
-        bulletsArrayLeft.push(new Gunshot());
-        console.log(bulletsArrayLeft);
-    }} else if (!KandyDaKane.gunOrientationLeft){
-        if(Gunshot.shotActive){
-        bulletsArrayRight.push(new Gunshot());
-        console.log(bulletsArrayRight);
-    }}
+            bulletsArrayLeft.push(new Gunshot());
+            console.log(bulletsArrayLeft);
+        }} else if (!KandyDaKane.gunOrientationLeft){
+            if(Gunshot.shotActive){
+                bulletsArrayRight.push(new Gunshot());
+                console.log(bulletsArrayRight);
+            }}
+            if(!pause){
+                [...bulletsArrayLeft].forEach(object => object.update(deltatime));
+                [...bulletsArrayRight].forEach(object => object.update(deltatime));
+            }
+            [...bulletsArrayLeft].forEach(object => object.drawLeft());
+            [...bulletsArrayRight].forEach(object => object.drawRight());
+            
+            // bulletsArrayRight = bulletsArrayRight.filter(object => !markedToDelete);
+            
+            // KandyDaKane.shoot();
+            // if (KandyDaKane.bullet && !KandyDaKane.gunOrientationLeft){
+                //     ctx.fillStyle = 'yellow';
+                //     ctx.fillRect(KandyDaKane.bulletXcoord, KandyDaKane.bulletYcoord, 10, 3);
+                //     KandyDaKane.bulletXcoord = KandyDaKane.bulletXcoord + 5;
+                // } else if (KandyDaKane.bullet && KandyDaKane.gunOrientationLeft){
+                    //     ctx.fillStyle = 'yellow';
+                    //     ctx.fillRect(KandyDaKane.bulletXcoord, KandyDaKane.bulletYcoord, 10, 3);
+                    //     KandyDaKane.bulletXcoord = KandyDaKane.bulletXcoord - 5;
+                    // }
+                    
+                    // KandyDaKane.draw();
+                    // KandyDaKane.update();
+                    if (pause){
+                        loadingMusic.play();
+                        ctx.drawImage(pauseImage, 200, 200);
+                    }
+                    
+                    if(startGame){
+                        ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
+                        if(!pause){
+                            santa.coordX--;
+                        }
+                        if (santa.coordX < -500){
+                            santa.coordX =  2000;
+                        }
+                    }
+                    
 
-    [...bulletsArrayLeft].forEach(object => object.update(deltatime));
-    [...bulletsArrayRight].forEach(object => object.update(deltatime));
-    [...bulletsArrayLeft].forEach(object => object.drawLeft());
-    [...bulletsArrayRight].forEach(object => object.drawRight());
-
-    // bulletsArrayRight = bulletsArrayRight.filter(object => !markedToDelete);
-
-    // KandyDaKane.shoot();
-    // if (KandyDaKane.bullet && !KandyDaKane.gunOrientationLeft){
-    //     ctx.fillStyle = 'yellow';
-    //     ctx.fillRect(KandyDaKane.bulletXcoord, KandyDaKane.bulletYcoord, 10, 3);
-    //     KandyDaKane.bulletXcoord = KandyDaKane.bulletXcoord + 5;
-    // } else if (KandyDaKane.bullet && KandyDaKane.gunOrientationLeft){
-    //     ctx.fillStyle = 'yellow';
-    //     ctx.fillRect(KandyDaKane.bulletXcoord, KandyDaKane.bulletYcoord, 10, 3);
-    //     KandyDaKane.bulletXcoord = KandyDaKane.bulletXcoord - 5;
-    // }
-
-    // KandyDaKane.draw();
-    // KandyDaKane.update();
-
-    if(startGame){
-    ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
-    santa.coordX--;
-    if (santa.coordX < -500){
-        santa.coordX =  2000;
-    }
-    }
-
-
-    if(startGame){
-        loadingMusic.play();
-    }
 
     backgroundStartScreen();
     // STYLING FOR SCORE AND MENU //
@@ -567,8 +585,9 @@ function animation(timestamp){
         drawPause();
         drawStart();
         drawReset();
-        
+        if(!pause){
         spriteMovementKeys();
+        }
         // spacebarGun();
 
            // END STYLING //
