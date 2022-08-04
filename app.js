@@ -43,6 +43,10 @@ const startScreenBackground = new Image();
 startScreenBackground.src = 'startScreenIMG.png';
 
 
+const loadingMusic = new Audio();
+loadingMusic.src = 'StartScreenMusic.ogg'
+
+
 
 const numberOfTerrorists = 2;
 const terroristArray = [];
@@ -69,81 +73,100 @@ const santa = {
     coordX: 1500,
 }
 
+
+
+
+// Player CLASS //
+
+
+
 class player {
     constructor(){
         this.image = rightKandySprite;
         this. width = 216;
         this.height = 233;
-        this.xCoord = 300;  
-        this.yCoord = 300;
+        this.xCoord = 450;  
+        this.yCoord = 400;
         this.sizeX = this.width/1.8;
         this.sizeY = this.height/1.8;
         this.xFrame = 0;
         this.yFrame = 0;
         this.speed = 5;
         this.moving = false;
-        this.gunShot = false;
+
         this.gunOrientationLeft = false;
-        // this.bullet = true;
+   
+
 
         document.addEventListener('keydown', this.keydown);
         document.addEventListener('keyup', this.keyup);
     }
 
-    
-    update(){}
-    
-    draw(ctx){
-        this.shoot();
-    }
-
-    
-    shoot(){
-        if (this.gunShot){
-            console.log('gunshot');
-            const speed = 5;
-            const delay = 7;
-            const damage = 25;
-            if (!this.gunOrientationLeft){
-            ctx.strokeStyle = 'black';
-                    ctx.fillStyle = 'yellow';
-                    ctx.strokeRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
-                    ctx.fillRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
-            } else if (this.gunOrientationLeft){
-                console.log('space');
-                ctx.strokeStyle = 'black';
-                ctx.fillStyle = 'yellow';
-                ctx.strokeRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
-                ctx.fillRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
-            }
-        }
-        
-    }
 
     keydown = (event) => {
         if(event.key === 'Space'){
-            this.gunShot = true;
+            // this.gunShot = true;
         }
     };
 
     keyup = (event) => {
         if(event.key === 'Space'){
-            this.gunShot = false;
+            // this.gunShot = false;
         }
     };
 
 }
 
+// End Player Class //
 
 const KandyDaKane = new player();
 
+// Gunshot Class //
+const bulletsArrayLeft = [];
+const bulletsArrayRight = [];
+
+class Gunshot{
+    constructor(){
+        this.shotActive = false;
+        this.xCoordLeft = KandyDaKane.xCoord + 7;
+        this.xCoordRight = KandyDaKane.xCoord + 103;
+        this.yCoord = KandyDaKane.yCoord + 52;
+        // this.bulletSpeed = 5;
+        this.width = 10;
+        this.height = 3;
+        this.xCoordDirection = 10;
+        this.markedToDelete = false;
+        // this.yCoordDirection = 0;
+    }
+
+    drawLeft(){
+        if(this.xCoordLeft > -20){
+            console.log('Gunshot bang bang');
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(this.xCoordLeft, this.yCoord, this.width, this.height);
+        }
+    }
+    drawRight(){
+        if(this.xCoordRight < 1000){
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(this.xCoordRight, this.yCoord, this.width, this.height);
+        } else if (this.xCoordRight > 1000){
+            this.markedToDelete = true;
+        }
+    }
+
+    update(deltatime){
+        this.xCoordLeft = this.xCoordLeft - this.xCoordDirection;
+        this.xCoordRight = this.xCoordRight + this.xCoordDirection;
+
+    }
+}
 
 
 
-let backgroundFrameX = 1;
-
+//Attack bird CLASS //
 let ravens = [];
-// CLASSES //
+let backgroundFrameX = 1;
 
 class AttackRaven {
     constructor(){
@@ -195,7 +218,7 @@ class AttackRaven {
     }
 }
 
-const raven = new AttackRaven();
+// const raven = new AttackRaven();
 
 
 class Enemy {
@@ -300,7 +323,7 @@ for (let i = 0; i < numberOfTerrorists; i++){
 window.addEventListener('keydown', function(event){
     if(event.code === 'Space'){
         // console.log('spacedown');
-        KandyDaKane.gunShot = true;
+        Gunshot.shotActive = true;
     } else{
         keys[event.key] = true; 
     }
@@ -309,7 +332,7 @@ window.addEventListener('keydown', function(event){
 window.addEventListener('keyup', function(event){
     if(event.code === 'Space'){
         // console.log('spaceup');
-        KandyDaKane.gunShot = false;
+        Gunshot.shotActive = false;
     } else{
     delete keys[event.key];
     }
@@ -350,6 +373,7 @@ window.addEventListener('keyup', function(event){
     function backgroundStartScreen(){
         if (!startGame){
             ctx.drawImage(startScreenBackground, 0, 0, startScreenBackground.width, startScreenBackground.height, 0, 0, canvas.width, canvas.height);
+            // loadingMusic.play();
         }
           }
 
@@ -472,7 +496,37 @@ function animation(timestamp){
 }
     const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
     KandyCane;
-    KandyDaKane.shoot();
+
+    if (KandyDaKane.gunOrientationLeft){
+        if(Gunshot.shotActive){
+        bulletsArrayLeft.push(new Gunshot());
+        console.log(bulletsArrayLeft);
+    }} else if (!KandyDaKane.gunOrientationLeft){
+        if(Gunshot.shotActive){
+        bulletsArrayRight.push(new Gunshot());
+        console.log(bulletsArrayRight);
+    }}
+
+    [...bulletsArrayLeft].forEach(object => object.update(deltatime));
+    [...bulletsArrayRight].forEach(object => object.update(deltatime));
+    [...bulletsArrayLeft].forEach(object => object.drawLeft());
+    [...bulletsArrayRight].forEach(object => object.drawRight());
+
+    // bulletsArrayRight = bulletsArrayRight.filter(object => !markedToDelete);
+
+    // KandyDaKane.shoot();
+    // if (KandyDaKane.bullet && !KandyDaKane.gunOrientationLeft){
+    //     ctx.fillStyle = 'yellow';
+    //     ctx.fillRect(KandyDaKane.bulletXcoord, KandyDaKane.bulletYcoord, 10, 3);
+    //     KandyDaKane.bulletXcoord = KandyDaKane.bulletXcoord + 5;
+    // } else if (KandyDaKane.bullet && KandyDaKane.gunOrientationLeft){
+    //     ctx.fillStyle = 'yellow';
+    //     ctx.fillRect(KandyDaKane.bulletXcoord, KandyDaKane.bulletYcoord, 10, 3);
+    //     KandyDaKane.bulletXcoord = KandyDaKane.bulletXcoord - 5;
+    // }
+
+    // KandyDaKane.draw();
+    // KandyDaKane.update();
 
     if(startGame){
     ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
@@ -480,6 +534,11 @@ function animation(timestamp){
     if (santa.coordX < -500){
         santa.coordX =  2000;
     }
+    }
+
+
+    if(startGame){
+        loadingMusic.play();
     }
 
     backgroundStartScreen();
@@ -528,20 +587,20 @@ animation(0);
              // some Functions //
              
 
-             function spacebarGun(){
-                 if (keys[' '] && KandyDaKane.gunOrientationLeft){
-                     console.log('space');
-                     ctx.strokeStyle = 'black';
-                     ctx.fillStyle = 'yellow';
-                     ctx.strokeRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
-                     ctx.fillRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
-                 } else if (keys[' '] && !KandyDaKane.gunOrientationLeft){
-                    ctx.strokeStyle = 'black';
-                    ctx.fillStyle = 'yellow';
-                    ctx.strokeRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
-                    ctx.fillRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
-                 }
-             }
+            //  function spacebarGun(){
+            //      if (keys[' '] && KandyDaKane.gunOrientationLeft){
+            //          console.log('space');
+            //          ctx.strokeStyle = 'black';
+            //          ctx.fillStyle = 'yellow';
+            //          ctx.strokeRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
+            //          ctx.fillRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
+            //      } else if (keys[' '] && !KandyDaKane.gunOrientationLeft){
+            //         ctx.strokeStyle = 'black';
+            //         ctx.fillStyle = 'yellow';
+            //         ctx.strokeRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
+            //         ctx.fillRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
+            //      }
+            //  }
 
 
 function spriteMovementKeys(){
