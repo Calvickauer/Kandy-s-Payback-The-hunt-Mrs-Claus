@@ -1,3 +1,4 @@
+
 window.addEventListener('load', function(){
 
 
@@ -43,7 +44,7 @@ startScreenBackground.src = 'startScreenIMG.png';
 
 
 
-const numberOfTerrorists = 3;
+const numberOfTerrorists = 2;
 const terroristArray = [];
 
 let timeTillNextAttackRaven = 0;
@@ -65,21 +66,8 @@ const background = {
 
 
 const santa = {
-    coordX: 800,
+    coordX: 1500,
 }
-
-// const player = {
-//     width: 265,
-//     height: 571,
-//     xCoord: 300,
-//     yCoord: 400,
-//     sizeX: 50,
-//     sizeY: 112,
-//     xFrame: 0,
-//     yFrame: 0,
-//     speed: 5,
-//     moving: false
-// }
 
 class player {
     constructor(){
@@ -94,23 +82,64 @@ class player {
         this.yFrame = 0;
         this.speed = 5;
         this.moving = false;
+        this.gunShot = false;
+        this.gunOrientationLeft = false;
+        // this.bullet = true;
+
+        document.addEventListener('keydown', this.keydown);
+        document.addEventListener('keyup', this.keyup);
     }
 
-    update(){
-
+    
+    update(){}
+    
+    draw(ctx){
+        this.shoot();
     }
 
-    draw(){
-
+    
+    shoot(){
+        if (this.gunShot){
+            console.log('gunshot');
+            const speed = 5;
+            const delay = 7;
+            const damage = 25;
+            if (!this.gunOrientationLeft){
+            ctx.strokeStyle = 'black';
+                    ctx.fillStyle = 'yellow';
+                    ctx.strokeRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
+                    ctx.fillRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
+            } else if (this.gunOrientationLeft){
+                console.log('space');
+                ctx.strokeStyle = 'black';
+                ctx.fillStyle = 'yellow';
+                ctx.strokeRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
+                ctx.fillRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
+            }
+        }
+        
     }
+
+    keydown = (event) => {
+        if(event.key === 'Space'){
+            this.gunShot = true;
+        }
+    };
+
+    keyup = (event) => {
+        if(event.key === 'Space'){
+            this.gunShot = false;
+        }
+    };
+
 }
+
 
 const KandyDaKane = new player();
 
 
-// const startScreen = {
-//     active: true
-// }
+
+
 let backgroundFrameX = 1;
 
 let ravens = [];
@@ -139,11 +168,12 @@ class AttackRaven {
         this.flapInterval = Math.random() * 60 + 100;
 
     // collision detection upon click //
-        this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]; // random number 1-255 no decimals
-        this.color = 'rgb(' + this.randomColors[0] + ',' + this.randomColors[1] + ',' + this.randomColors[2] + ')';
+        // this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]; // random number 1-255 no decimals
+        // this.color = 'rgb(' + this.randomColors[0] + ',' + this.randomColors[1] + ',' + this.randomColors[2] + ')';
     }
 
     update(deltatime){
+        if(startGame){
         if (this.yCoord < 50 || this.yCoord > 300){
             this.yCoordDirection = this.yCoordDirection * -1
         };
@@ -156,14 +186,12 @@ class AttackRaven {
             else this.frame++;
             this.timeSinceFlap = 0;
         }
-
+    }
     }
 
     draw(){
-        collisionCtx.fillStyle = this.color;
-        // collisionCtx.fillRect(500, 300, 300, 300);
-        // collisionCtx.fillRect(this.xCoord, this.yCoord, this.width, this.height);
-        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
+             ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth,
+             this.spriteHeight, this.xCoord, this.yCoord, this.width, this.height);
     }
 }
 
@@ -178,13 +206,14 @@ class Enemy {
         this.height = 1291;
         this.sizeX = this.width / 10;
         this.sizeY = this.height / 10;
-        this.xCoord = Math.random() * 10 + 1;
-        this.yCoord = Math.random() * canvas.height + 400;
-        this.speed = Math.random() * 2 + 1;
+        this.xCoord = Math.random() * 50 + 1;
+        this.yCoord = Math.random() * canvas.height + 300;
+        this.speed = Math.random() * 4 + 1;
         this.frameX = 0; 
+        this.markedToDelete = false;
     }
     update(){
-
+        if(startGame){
         if((KandyDaKane.xCoord - this.xCoord) < 300){// stops enemy from constant attack
          if (this.xCoord < KandyDaKane.xCoord && this.yCoord > KandyDaKane.yCoord){// upward  right angle
             this.xCoord++;
@@ -200,7 +229,7 @@ class Enemy {
             this.yCoord++;
         }
     }
-
+        }
     }
     draw(){
         ctx.drawImage(this.image, 0, 0, this.width, this.height, this.xCoord, this.yCoord + 25, this.sizeX, this.sizeY); 
@@ -265,28 +294,30 @@ for (let i = 0; i < numberOfTerrorists; i++){
           
 
            // EVENT LISTENERS  //
+
+
+
 window.addEventListener('keydown', function(event){
+    if(event.code === 'Space'){
+        // console.log('spacedown');
+        KandyDaKane.gunShot = true;
+    } else{
         keys[event.key] = true; 
-        
+    }
 });
 
 window.addEventListener('keyup', function(event){
+    if(event.code === 'Space'){
+        // console.log('spaceup');
+        KandyDaKane.gunShot = false;
+    } else{
     delete keys[event.key];
-
+    }
 });
 
 
-// collisionCanvas.addEventListener('mousedown', function(event){
-//     ravens.forEach((raven)=>{
-//         if (event.offsetX > raven.xCoord && 
-//             event.offsetY > raven.yCoord &&
-//              event.offsetX < raven.xCoord + raven.width &&
-//              event.offsetY < raven.yCoord + raven.height
-//              ){
-//                  console.log('hit');
-//             }
-//         })
-//     });
+
+
     canvas.addEventListener('mousedown', function(event){
         ravens.forEach((raven)=>{
             if (event.offsetX > raven.xCoord && 
@@ -298,47 +329,63 @@ window.addEventListener('keyup', function(event){
                     console.log(raven);
                     raven.markedToDelete = true;
                     explosions.push(new Explosion(raven.xCoord, raven.yCoord, raven.width));
-                     console.log('hit');
+                     console.log('Bird hit');
                      scoreBoard = scoreBoard + 7;
                      console.log(explosions);
                 }
             })
+            // terroristArray.forEach((Enemy)=>{
+            //     if (event.offsetX > Enemy.xCoord && 
+            //         event.offsetY > Enemy.yCoord &&
+            //          event.offsetX < Enemy.xCoord + Enemy.width &&
+            //          event.offsetY < Enemy.yCoord + Enemy.height
+            //          ){
+            //             console.log('Enemy hit');
+            //             console.log(Enemy);
+            //             // Enemy.markedToDelete = true;
+            //          }})
         });
     
 
-             
-    
-
-
     function backgroundStartScreen(){
         if (!startGame){
-            ctx.drawImage(startScreenBackground, 0, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(startScreenBackground, 0, 0, startScreenBackground.width, startScreenBackground.height, 0, 0, canvas.width, canvas.height);
         }
           }
 
     let startGame = false;
+
+
     canvas.addEventListener('click', function(event){
-        console.log(event.x, event.y);
+        console.log("offsetX", event.offsetX, "offsetY", event.offsetY, "X", event.x, "Y", event.y, "pageX", event.pageX, "pageY", event.pageY, "clientX", event.clientX, "clientY", event.clientY);
+        if(event.x > 439 && event.x < 732 && event.y > 157 && event.y < 197){
+            console.log('Start Game button Pressed');
         if (!startGame){
             startGame = true;
             console.log(true);
+
+
         }
+    } else if (event.x > 134 && event.x < 432 && event.y > 157 && event.y < 197){
+        console.log('how to button Pressed');
+
+
+    } else if ( event.x > 439 && event.x < 732 && event.y > 203 && event.y < 254){
+        console.log('Pause Button Pressed');
+
+
+    } else if (event.x > 134 && event.x < 432 && event.y > 203 && event.y < 255){
+        console.log('reset button pressed');
+
+
+    }
     })
-        
+
 
 // END EVENT LISTENERS //
 
 // FUNCTIONS //
 
-
-
-// function displayTextStatus(){
-
-// }
-
-// function enemyHandler(){
-
-// }
 
 function drawScore(){
     ctx.fillStyle = 'black';
@@ -350,14 +397,14 @@ function drawScore(){
 function drawHowTo(){
     ctx.fillStyle = 'black';
     ctx.fillText('How to Play', 77, 27);
-    ctx.fillStyle = 'lightblue';
+    ctx.fillStyle = 'red';
     ctx.fillText('How to Play', 80, 30);
 }
 
 function drawReset(){
     ctx.fillStyle = 'black';
     ctx.fillText('Reset Game', 77, 80);
-    ctx.fillStyle = 'orange';
+    ctx.fillStyle = 'red';
     ctx.fillText('Reset Game', 80, 83);
 }
 
@@ -366,20 +413,27 @@ function drawHealth(){
     ctx.fillText('Health Level:     ' + healthBar, 662, 80);
     ctx.fillStyle = 'white';
     ctx.fillText('Health Level:     ' + healthBar, 665, 83);
+    // for ( let i = 0; i < terroristArray.length; i++){
+    //     if (terroristArray[i] <= KandyDaKane.xCoord && terroristArray[i] > KandyCane.xCoord - terroristArray[i].width){
+    //         healthBar = healthBar - 10;
+    //         console.log(terroristArray[i]);
+    //         return healthBar;
+    //     }
+    // }
 
 }
 
 function drawPause(){
     ctx.fillStyle = 'black';
     ctx.fillText('Pause Game', 390, 80);
-    ctx.fillStyle = 'orange';
+    ctx.fillStyle = 'red';
     ctx.fillText('Pause Game', 390, 83);
 }
 
 function drawStart(){
     ctx.fillStyle = 'black';
     ctx.fillText('Start Game', 390, 27);
-    ctx.fillStyle = 'orange';
+    ctx.fillStyle = 'lightgreen';
     ctx.fillText('Start Game', 390, 30);
 }
 
@@ -390,7 +444,9 @@ function animation(timestamp){
     requestAnimationFrame(animation);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
+    if(startGame){
     ctx.drawImage(gifBackground, backgroundFrameX, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
+    }
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     timeTillNextAttackRaven += deltatime;
@@ -406,22 +462,30 @@ function animation(timestamp){
     
     ravens = ravens.filter(object => !object.markedToDelete);// would like insight on this line
     explosions = explosions.filter(object => !object.markedToDelete);
-
+    // terroristArray = terroristArray.filter(object => !object.markedToDelete);
     
-    const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
-    KandyCane;
-    
+    if (startGame){
     terroristArray.forEach(enemy => {
         enemy.update();
         enemy.draw();
     })
+}
+    const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
+    KandyCane;
+    KandyDaKane.shoot();
+
+    if(startGame){
     ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
     santa.coordX--;
-
+    if (santa.coordX < -500){
+        santa.coordX =  2000;
+    }
+    }
 
     backgroundStartScreen();
     // STYLING FOR SCORE AND MENU //
-    ctx.fillStyle = 'darkgreen';
+    ctx.lineJoin = 'bevel';
+    ctx.fillStyle = 'darkgrey';
     ctx.fillRect(0, 0, canvas.width, 100);
     ctx.fillStyle = 'red';
     ctx.fillRect(300, 0, 5, 100);
@@ -444,11 +508,12 @@ function animation(timestamp){
         drawPause();
         drawStart();
         drawReset();
+        
+        spriteMovementKeys();
+        // spacebarGun();
 
            // END STYLING //
     
-
-    spriteMovementKeys();
 }
 
 animation(0);
@@ -460,8 +525,23 @@ animation(0);
 
              // END  OF ANIMATION LOOP //
 
-            // some Functions //
+             // some Functions //
+             
 
+             function spacebarGun(){
+                 if (keys[' '] && KandyDaKane.gunOrientationLeft){
+                     console.log('space');
+                     ctx.strokeStyle = 'black';
+                     ctx.fillStyle = 'yellow';
+                     ctx.strokeRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
+                     ctx.fillRect(KandyDaKane.xCoord, KandyDaKane.yCoord + 52, 10, 3);
+                 } else if (keys[' '] && !KandyDaKane.gunOrientationLeft){
+                    ctx.strokeStyle = 'black';
+                    ctx.fillStyle = 'yellow';
+                    ctx.strokeRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
+                    ctx.fillRect(KandyDaKane.xCoord + 110, KandyDaKane.yCoord + 52, 10, 3);
+                 }
+             }
 
 
 function spriteMovementKeys(){
@@ -469,11 +549,13 @@ function spriteMovementKeys(){
         KandyDaKane.xCoord -= KandyDaKane.speed;
         KandyDaKane.moving = true;
         KandyDaKane.image = leftKandySprite;
+        KandyDaKane.gunOrientationLeft = true;
         console.log(`Arrow Key Left  X: ${KandyDaKane.xCoord} Y: ${KandyDaKane.yCoord}`);
     } else if (keys['ArrowRight'] && KandyDaKane.xCoord < canvas.width - 50){
         KandyDaKane.xCoord += KandyDaKane.speed;
         KandyDaKane.moving = true;
         KandyDaKane.image = rightKandySprite;
+        KandyDaKane.gunOrientationLeft = false;
         console.log(`Arrow Key Right  X: ${KandyDaKane.xCoord}  Y: ${KandyDaKane.yCoord}`);
     } else if (keys['ArrowUp'] && KandyDaKane.yCoord > 350){
         KandyDaKane.yCoord -= KandyDaKane.speed;
@@ -502,39 +584,4 @@ function spriteMovementKeys(){
     }
 }
 
-
-
-
-
-
-
-
-
 });// end of load event listener all data within  //
-
-
-
-
-// backgroundLoop(31); //COMMENTED OUT TEMPORARILY 
-//     ctx.fillRect(0, 162.5, canvas.width, 10); //Y quardant 1
-//     ctx.fillRect(0, 325, canvas.width, 10);//Y quardant 2
-//     ctx.fillRect(0, 487.5, canvas.width, 10);//Y quardant 3
-// // need to combine quadrants into X/Y sections 
-//     ctx.fillRect(225, 0, 10, canvas.height);//X quadrant 1
-//     ctx.fillRect(450, 0, 10, canvas.height);//X quadrant 2
-//     ctx.fillRect(675, 0, 10, canvas.height);//X quadrant 3
-
-// function backgroundLoop(speed){
-    //     // requestAnimationFrame(backgroundLoop);
-    //     let i = 2
-    //     if(backgroundFrameX < 7 && speed % i == 0){
-        //         console.log(true);
-        //         let backgroundFrame = backgroundFrameX * background.width;
-        //         ctx.drawImage(gifBackground, backgroundFrame, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
-        //         backgroundFrameX++;
-        //         i++;
-        //     } else if (backgroundFrameX == 7){
-            //      backgroundFrameX = 1;
-            //     }
-            
-            // }
