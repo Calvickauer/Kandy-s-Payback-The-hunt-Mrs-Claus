@@ -58,8 +58,9 @@ howToPlayIMG.src = 'howtoScreen.png';
 const pauseMusic = new Audio();
 pauseMusic.src = 'StartScreenMusic.ogg'
 
+// import themeMusicc from 'theme-loop.ogg'
 const mainMusic = new Audio();
-mainMusic.src = 'mainMusic.mp3'
+mainMusic.src = 'theme-loop.ogg';
 
 let timeTillNextAttackRaven = 0;
 let ravenInterval = 2000;
@@ -247,6 +248,14 @@ class Enemy {
         } else if (this.xCoord < KandyDaKane.xCoord + 25 && this.yCoord < KandyDaKane.yCoord + 25){// down right angle
             this.xCoord++;
             this.yCoord++;
+        } else if (this.yCoord > KandyDaKane.yCoord){
+            this.yCoord--;
+        } else if (this.xCoord > KandyDaKane.xCoord){
+            this.xCoord--;
+        } else if (this.yCoord < KandyDaKane.yCoord + 25){
+            this.yCoord++;
+        } else if (this.xCoord < KandyDaKane.xCoord + 25){
+            this.xCoord++;
         }
     }
         }
@@ -356,6 +365,7 @@ window.addEventListener('keyup', function(event){
             console.log('Start Game button Pressed');
             pause = false;
             howToPlay = false;
+            mainMusic.play();
             console.log('not paused');
         if (!startGame){
             startGame = true;
@@ -368,6 +378,7 @@ window.addEventListener('keyup', function(event){
             howToPlay = false;
         } else {
         howToPlay = true;
+        pause = true;
         console.log('how to button Pressed');
         }
 
@@ -387,6 +398,7 @@ window.addEventListener('keyup', function(event){
         bulletsArrayRight = [];
         eagles = [];
         KandyDaKane.xCoord = 400;
+        KandyDaKane.yCoord = 450;
         for (let i = 0; i < numberOfTerrorists; i++){
             terroristArray.push(new Enemy());
         }
@@ -417,6 +429,7 @@ function backgroundStartScreen(){
     if (!startGame){
         ctx.drawImage(startScreenBackground, 0, 0, startScreenBackground.width, startScreenBackground.height, 0, 0, canvas.width, canvas.height);
         // pauseMusic.play();
+       
     }
       }
 
@@ -451,7 +464,11 @@ for (let c = bulletsArrayRight.length - 1; c >= 0; c--){
 }
     for (let terArray = terroristArray.length - 1; terArray >= 0; terArray--){
         let eachTerrorist = terroristArray[terArray];
-        if (eachTerrorist.xCoord > KandyDaKane.xCoord && eachTerrorist.xCoord < KandyDaKane.xCoord + KandyDaKane.sizeX && eachTerrorist.yCoord > KandyDaKane.yCoord && eachTerrorist.yCoord < KandyDaKane.yCoord + KandyDaKane.sizeY && healthBar > 0){
+        if (eachTerrorist.xCoord > KandyDaKane.xCoord + 10 &&
+             eachTerrorist.xCoord < KandyDaKane.xCoord + KandyDaKane.sizeX - 10 &&
+              eachTerrorist.yCoord > KandyDaKane.yCoord + 10 &&
+               eachTerrorist.yCoord < KandyDaKane.yCoord + KandyDaKane.sizeY -10 &&
+                healthBar > 0){
             healthBar = healthBar - 1;
         }
     }
