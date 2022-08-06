@@ -26,7 +26,15 @@ Design:
 
 
 Progress Pictures:
+
+![Game1!](https://user-images.githubusercontent.com/106926062/183257103-81eed4ee-65c8-45c9-9520-08d3c028db61.png)
+
+![Game1!](https://user-images.githubusercontent.com/106926062/183257096-15461ae1-3230-4de6-ac56-62bcdd43cb39.png)
+
+![Game1!](https://user-images.githubusercontent.com/106926062/183257089-f1118d2e-d4af-4455-b0d9-0cfbce72e0ee.png)
+
 ![GAME!](https://user-images.githubusercontent.com/106926062/183257153-ca470d14-cb07-4d86-8811-43e72abd90d3.png)
 
+![Game1!](https://user-images.githubusercontent.com/106926062/183257159-75c6d461-e7c6-4671-8fff-95ec49a030b4.png)
 
 
