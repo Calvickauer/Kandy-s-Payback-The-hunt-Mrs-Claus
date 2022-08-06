@@ -1,46 +1,43 @@
+// load contents event listener //
 window.addEventListener('load', function(){
 
+// Canvas's //
 const canvas = document.getElementById('canvasMain');
-const ctx = canvas.getContext('2d');
 canvas.width = 900;
 canvas.height = 650;
+const ctx = canvas.getContext('2d');
 ctx.font = '25px Impact';
-
-const staticCanvasWidth = 900;
-const staticCanvasHeight = 650; 
-
-console.log(ctx);
 
 const collisionCanvas = document.getElementById('collisionCanvas');
 const collisionCtx = collisionCanvas.getContext('2d');
+
+// Dimensions //
+const staticCanvasWidth = 900;
+const staticCanvasHeight = 650; 
+
 collisionCanvas.width = 950;
 collisionCanvas.height = 700;
-
-console.log(collisionCtx);
-
-const startGameDimensions = {
-    height: 404,
-    width: 316
-}
 
 const background = {
     height: 342,
     width: 640
 }
 
+// main character and AI characters //
 const rightKandySprite = new Image();
 rightKandySprite.src = "playerSprites/DaRealKane.png";
 const leftKandySprite = new Image();
 leftKandySprite.src = 'playerSprites/DaRealKane copy.png';
-
-const pauseImage = new Image();
-pauseImage.src = 'PauseIMG.png';
 
 const enemySprite = new Image();
 enemySprite.src = "./craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png";
 
 const santaSprite = new Image();
 santaSprite.src = './creepySanta.png';
+
+// screen images //
+const pauseImage = new Image();
+pauseImage.src = 'PauseIMG.png';
 
 const gifBackground = new Image();
 gifBackground.src = './backgroundSheet.png';
@@ -54,34 +51,40 @@ startScreenBackground.src = 'startScreenIMG.png';
 
 const howToPlayIMG = new Image();
 howToPlayIMG.src = 'howtoScreen.png';
+//  end of screen images //
 
+// Audio files //
 const pauseMusic = new Audio();
 pauseMusic.src = 'StartScreenMusic.ogg'
-
-// import themeMusicc from 'theme-loop.ogg'
+pauseMusic.volume = 0.5;
 const mainMusic = new Audio();
 mainMusic.src = 'theme-loop.ogg';
 
+// bird interval / array / starting frame
 let timeTillNextAttackRaven = 0;
 let ravenInterval = 2000;
 let lastTime = 0;
 let eagles = [];
 let backgroundFrameX = 1;
 
+// health level and  starting score //
 let healthBar = 100;
 let scoreBoard = 0;
 
 let explosions = [];
 
+// bullet left and right array//
+// time between shots interval //
 let bulletsArrayLeft = [];
 let bulletInterval = 300;
 let timeTillNextBullet = 0;
 let bulletsArrayRight = [];
  
-
+// terrorist starting number and array //
 let numberOfTerrorists = 2;
 let terroristArray = [];
 
+// keyboard keys pressed array //
 const keys = [];
 
 let startGame = false;
@@ -93,7 +96,6 @@ const santa = {
 }
 
 // Player CLASS //
-
 class player {
     constructor(){
         this.image = rightKandySprite;
@@ -107,55 +109,46 @@ class player {
         this.yFrame = 0;
         this.speed = 5;
         this.moving = false;
-        
-        this.gunOrientationLeft = false;
-        
+        this.gunOrientationLeft = false;      
     }
-    
 }
 
-const KandyDaKane = new player();
+// main player //
+const KandyDaKane = new player(); // main player //
+// main player //
 
 // Gunshot Class //
-
 class Gunshot{
     constructor(){
         this.shotActive = false;
         this.xCoordLeft = KandyDaKane.xCoord + 12;
         this.xCoordRight = KandyDaKane.xCoord + 98;
         this.yCoord = KandyDaKane.yCoord + 53;
-        // this.bulletSpeed = 5;
         this.width = 10;
         this.height = 3;
         this.xCoordDirection = 10;
         this.markedToDelete = false;
         this.damage = -10;
         this.delay = 10;
-
-        // this.yCoordDirection = 0;
     }
 
-    drawLeft(){
+    drawLeft(){ // gunshot left //
         if(this.xCoordLeft > -20){
-            // console.log('Gunshot Left');
             ctx.fillStyle = 'yellow';
             ctx.fillRect(this.xCoordLeft, this.yCoord, this.width, this.height);
         }
          if (this.xCoordLeft < - 20){
             this.markedToDelete = true;
         }
-
     }
-    drawRight(){
+    drawRight(){ // gunshot right //
         if(this.xCoordRight < 1000){
-            // console.log('Gunshot Right');
                 ctx.fillStyle = 'yellow';
                 ctx.fillRect(this.xCoordRight, this.yCoord, this.width, this.height);  
              }
              if (this.xCoordRight > 1000){
             this.markedToDelete = true;
         }
-
     }
 
     update(deltatime){
@@ -166,7 +159,6 @@ class Gunshot{
 }
 
 // Bird Class //
-
 class AttackRaven {
     constructor(){
         this.spriteWidth = 225;
@@ -218,7 +210,6 @@ class AttackRaven {
 }
 
  // Enemies Class
-
 class Enemy {
     constructor(){
         this.image = new Image();
@@ -268,7 +259,6 @@ class Enemy {
 }
 
  // Explosion Class
-
 class Explosion {
     constructor(xCoord, yCoord, imageSize){
         this.image = new Image();
@@ -281,6 +271,7 @@ class Explosion {
         this.frame = 0;
         this.sound = new Audio();
         this.sound.src = 'shotgun.wav';
+        this.sound.volume = 0.3;
         this.timeSinceLastFrame = 0;
         this.frameInterval = 300;
         this.markedToDelete = false;
@@ -300,17 +291,14 @@ class Explosion {
             this.spriteHeight, this.x, this.y + this.size/8, this.size, this.size);
     }
     }
-
+    // END OF CLASSES // 
 
 
 for (let i = 0; i < numberOfTerrorists; i++){
     terroristArray.push(new Enemy());
 }
 
-          // END OF CLASSES // 
-
            // EVENT LISTENERS  //
-
 window.addEventListener('keydown', function(event){
     if(event.code === 'Space'){
         // console.log('spacedown');
@@ -345,22 +333,12 @@ window.addEventListener('keyup', function(event){
                      console.log(explosions);
                 }
             })
-            // terroristArray.forEach((Enemy)=>{
-            //     if (event.offsetX > Enemy.xCoord && 
-            //         event.offsetY > Enemy.yCoord &&
-            //          event.offsetX < Enemy.xCoord + Enemy.width &&
-            //          event.offsetY < Enemy.yCoord + Enemy.height
-            //          ){
-            //             console.log('Enemy hit');
-            //             console.log(Enemy);
-            //             // Enemy.markedToDelete = true;
-            //          }})
         });
 
     canvas.addEventListener('click', function(event){
         console.log("offsetX", event.offsetX, "offsetY", event.offsetY, "X", event.x, "Y", event.y, "pageX", event.pageX, "pageY", event.pageY, "clientX", event.clientX, "clientY", event.clientY);
 
-            // START GAME BUTTON // all within same click event
+            // START GAME BUTTON // all within same click event //
         if(event.offsetX > 308 && event.offsetX < 601 && event.offsetY > 2 && event.offsetY < 43){
             console.log('Start Game button Pressed');
             pause = false;
@@ -370,9 +348,9 @@ window.addEventListener('keyup', function(event){
         if (!startGame){
             startGame = true;
             console.log(true);
-            
-            // HOW TO BUTTON // all within same click event
-        }
+            }
+
+        // HOW TO BUTTON // all within same click event //
     } else if (event.offsetX > 1 && event.offsetX < 301 && event.offsetY > 2 && event.offsetY < 43){
         if (howToPlay){
             howToPlay = false;
@@ -382,15 +360,13 @@ window.addEventListener('keyup', function(event){
         console.log('how to button Pressed');
         }
 
-            //PAUSE BUTTON // all within same click event
-
+            //PAUSE BUTTON // all within same click event //
     } else if ( event.offsetX > 309 && event.offsetX < 600 && event.offsetY > 51 && event.offsetY < 102){
         console.log('Pause Button Pressed');
         pause = true;
         console.log('paused');
 
-            // RESET BUTTON // all within same click event
-
+            // RESET BUTTON // all within same click event //
     } else if (event.offsetX > 1 && event.offsetX < 301 && event.offsetY > 51 && event.offsetY < 103 || healthBar == 0){
         console.log('reset button pressed');
         terroristArray = [];
@@ -406,8 +382,6 @@ window.addEventListener('keyup', function(event){
         scoreBoard = 0;
         healthBar = 100;
         howToPlay = false;
-        
-
     }
     })
 
@@ -416,20 +390,11 @@ window.addEventListener('keyup', function(event){
 
 // FUNCTIONS //
 
-
-   // for ( let i = 0; i < terroristArray.length; i++){
-    //     if (terroristArray[i] <= KandyDaKane.xCoord && terroristArray[i] > KandyCane.xCoord - terroristArray[i].width){
-    //         healthBar = healthBar - 10;
-    //         console.log(terroristArray[i]);
-    //         return healthBar;
-    //     }
-    // }
-    
 function backgroundStartScreen(){
     if (!startGame){
-        ctx.drawImage(startScreenBackground, 0, 0, startScreenBackground.width, startScreenBackground.height, 0, 0, canvas.width, canvas.height);
-        // pauseMusic.play();
-       
+        ctx.drawImage(startScreenBackground, 0, 0,
+             startScreenBackground.width, startScreenBackground.height,
+              0, 0, canvas.width, canvas.height);    
     }
       }
 
@@ -439,7 +404,10 @@ function hitTest(){
         for (let e = terroristArray.length - 1; e >= 0; e--){
             let bArray = bulletsArrayLeft[b];
             let tArray = terroristArray[e];
-            if(bArray.xCoordLeft > tArray.xCoord && bArray.xCoordLeft < tArray.xCoord + tArray.sizeX && bArray.yCoord > tArray.yCoord && bArray.yCoord < tArray.yCoord + tArray.sizeY){
+            if(bArray.xCoordLeft > tArray.xCoord &&
+                 bArray.xCoordLeft < tArray.xCoord + tArray.sizeX &&
+                  bArray.yCoord > tArray.yCoord &&
+                   bArray.yCoord < tArray.yCoord + tArray.sizeY){
             tArray.markedToDelete = true;
             if(tArray.markedToDelete){
             bArray.markedToDelete = true;
@@ -452,7 +420,10 @@ for (let c = bulletsArrayRight.length - 1; c >= 0; c--){
     for (let f = terroristArray.length - 1; f >= 0; f--){
         let cArray = bulletsArrayRight[c];
         let teArray = terroristArray[f];
-        if(cArray.xCoordRight > teArray.xCoord && cArray.xCoordRight < teArray.xCoord + teArray.sizeX && cArray.yCoord > teArray.yCoord && cArray.yCoord < teArray.yCoord + teArray.sizeY){
+        if(cArray.xCoordRight > teArray.xCoord &&
+             cArray.xCoordRight < teArray.xCoord + teArray.sizeX &&
+              cArray.yCoord > teArray.yCoord &&
+               cArray.yCoord < teArray.yCoord + teArray.sizeY){
         teArray.markedToDelete = true;
         console.log('hit');
         if(teArray.markedToDelete){
@@ -474,8 +445,7 @@ for (let c = bulletsArrayRight.length - 1; c >= 0; c--){
     }
 }
 
-
-
+// Drawing canvas buttons for my click event //
 function drawScore(){
     ctx.fillStyle = 'black';
     ctx.fillText('Current Score:     ' + scoreBoard, 662, 27);
@@ -518,7 +488,7 @@ function drawStart(){
     ctx.fillText('Start Game', 390, 30);
 }
 
-
+// Player movement // 
 function spriteMovementKeys(){
     if (keys['ArrowLeft'] && KandyDaKane.xCoord > 0){
         KandyDaKane.xCoord -= KandyDaKane.speed;
@@ -559,16 +529,17 @@ function spriteMovementKeys(){
     }
 }
 
-
            // ANIMATION LOOP //
-
 
 function animation(timestamp){
     requestAnimationFrame(animation);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
+    // main background //
     if(startGame){
-    ctx.drawImage(gifBackground, backgroundFrameX, 0, background.width, background.height, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(gifBackground, backgroundFrameX, 0,
+         background.width, background.height, 0, 0,
+          canvas.width, canvas.height);
     }
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
@@ -606,19 +577,23 @@ function animation(timestamp){
         numberOfTerrorists = numberOfTerrorists + 2;
     }
 
-    const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
-    KandyCane;
+    const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width,
+         KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord,
+          KandyDaKane.sizeX, KandyDaKane.sizeY); 
+    
+         KandyCane;
     
     if(!pause){
         timeTillNextBullet += deltatime;
         if (KandyDaKane.gunOrientationLeft){
-            if(Gunshot.shotActive && timeTillNextBullet > bulletInterval){
+            if(Gunshot.shotActive &&
+                timeTillNextBullet > bulletInterval){
                 bulletsArrayLeft.push(new Gunshot());
                 console.log(bulletsArrayLeft);
                 timeTillNextBullet = 0;
-                // timeTillNextBullet = timeTillNextBullet + Gunshot.delay;
             }} else if (!KandyDaKane.gunOrientationLeft){
-                if(Gunshot.shotActive && timeTillNextBullet > bulletInterval){
+                if(Gunshot.shotActive && 
+                    timeTillNextBullet > bulletInterval){
                     bulletsArrayRight.push(new Gunshot());
                     console.log(bulletsArrayRight);
                     timeTillNextBullet = 0;
@@ -632,44 +607,37 @@ function animation(timestamp){
 
             bulletsArrayLeft = bulletsArrayLeft.filter(object =>!object.markedToDelete);
             bulletsArrayRight = bulletsArrayRight.filter(object =>!object.markedToDelete);
-            
-            // if (!Gunshot.shotActive && timeTillNextBullet > 0){
-                //     timeTillNextBullet--;
-                // }
                 
-                // bulletsArrayRight = bulletsArrayRight.filter(object => !markedToDelete);
-                
+
+            // start game button pressed //
                 if(startGame){
-                ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 475, 200, 200);
+                ctx.drawImage(santaSprite, 0, 0, santaSprite.width,
+                     santaSprite.height, santa.coordX, 475, 200, 200);
                 if(!pause){
                     santa.coordX--;
                 }
                 if (santa.coordX < -500){
                     santa.coordX =  2000;
                 }
-            }
+                }
 
-            if (pause){
-                // mainMusic.play();
-                pauseMusic.play();
-                ctx.drawImage(pauseImage, 200, 200);
-            }  else {
-                // mainMusic.play();
-                pauseMusic.pause();
-            }
-            
+                if (pause){
+                    pauseMusic.play();
+                    ctx.drawImage(pauseImage, 200, 200);
+                }  else {
+                    pauseMusic.pause();
+                }
+                
 
-            // END GAME IMAGE DISPLAY //
-            if (healthBar  == 0){
-                ctx.drawImage(EndGameIMG, 0, 100, canvas.width, 550);
-            }
-
-            
+                // END GAME IMAGE DISPLAY //
+                if (healthBar  == 0){
+                    ctx.drawImage(EndGameIMG, 0, 100, canvas.width, 550);
+                }
                 backgroundStartScreen();
 
-
                 if (howToPlay){
-                    ctx.drawImage(howToPlayIMG, -12, 0, canvas.width + 22, canvas.height + 20);
+                    ctx.drawImage(howToPlayIMG, -12, 0,
+                         canvas.width + 22, canvas.height + 20);
                 }
 
                 // STYLING FOR SCORE AND MENU //
@@ -703,14 +671,9 @@ function animation(timestamp){
                     }
            // END STYLING //
            // END OF ANIMATION LOOP //
-
-        //    console.log(terroristArray);
 }
 
 animation(0);
-
-// hitTest();
-
 
 });// end of load event listener all data within  //
 

@@ -40,8 +40,8 @@ h1 {
 }
 
 body {
-    /* display: flex;
-  justify-content: center;
+    /* display: flex; */
+  /* justify-content: center;
   align-items: center; */
     background-image: url('bodyIMG.jpg_large');
     background-size: cover;
@@ -57,9 +57,9 @@ body {
 
 
 #collisionCanvas {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-around; */
     
     background: rgb(255,0,0);
     background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,255,1) 7%, rgba(233,19,7,1) 13%, rgba(255,255,255,1) 25%, rgba(238,1,1,0.9906337535014006) 35%, rgba(255,255,255,1) 45%, rgba(255,0,16,1) 56%, rgba(255,255,255,1) 64%, rgba(255,0,16,1) 72%, rgba(255,255,255,1) 79%, rgba(255,0,16,1) 86%, rgba(255,255,255,1) 93%, rgba(255,0,16,1) 100%);
