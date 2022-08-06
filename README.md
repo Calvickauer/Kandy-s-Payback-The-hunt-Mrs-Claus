@@ -4,7 +4,7 @@ Game Title: Kandy's Payback: The hunt for Mrs. Claus
 
 Game Link:  https://calvickauer.github.io/Kandy-s-Payback-The-hunt-Mrs-Claus/ 
 
-![GAME!](https://user-images.githubusercontent.com/106926062/183257153-ca470d14-cb07-4d86-8811-43e72abd90d3.png)
+![Game!](https://user-images.githubusercontent.com/106926062/183257513-431fc8a0-ed4e-4506-9a34-3fbb4b6b3908.png)
 
 Creator: Calvin Moldenhauer
 
@@ -26,6 +26,7 @@ Design:
 
 
 Progress Pictures:
+![GAME!](https://user-images.githubusercontent.com/106926062/183257153-ca470d14-cb07-4d86-8811-43e72abd90d3.png)
 
 
 
