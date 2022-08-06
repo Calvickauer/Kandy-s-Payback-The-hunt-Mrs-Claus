@@ -22,7 +22,18 @@ Menu Buttons: Pause, Start, Reset, Howto
 Health level
 ScoreBoard
 
+controls:
+
+
+
+
+
+
 Design:
+- create a player that could move around a specific Canvas area
+- make an animated Sprite character that you could interact
+- give a responsive layout with click events
+- recieve damage if hit test positive with ai generated characters.
 
 
 Progress Pictures:
