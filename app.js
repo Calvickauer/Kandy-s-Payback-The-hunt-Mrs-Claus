@@ -46,6 +46,9 @@ const gifBackground = new Image();
 gifBackground.src = './backgroundSheet.png';
 gifBackground.id = 'background';
 
+const EndGameIMG = new Image();
+EndGameIMG.src = 'gameoverrr.jpeg';
+
 const startScreenBackground = new Image();
 startScreenBackground.src = 'startScreenIMG.png';
 
@@ -68,7 +71,6 @@ let backgroundFrameX = 1;
 let healthBar = 100;
 let scoreBoard = 0;
 
-
 let explosions = [];
 
 let bulletsArrayLeft = [];
@@ -77,7 +79,7 @@ let timeTillNextBullet = 0;
 let bulletsArrayRight = [];
  
 
-const numberOfTerrorists = 2;
+const numberOfTerrorists = 8;
 let terroristArray = [];
 
 const keys = [];
@@ -225,7 +227,7 @@ class Enemy {
         this.height = 1291;
         this.sizeX = this.width / 10;
         this.sizeY = this.height / 10;
-        this.xCoord = Math.random() * 50 + 1;
+        this.xCoord = Math.random() * 1000 + 900;
         this.yCoord = Math.random() * canvas.height + 300;
         this.speed = Math.random() * 4 + 1;
         this.frameX = 0; 
@@ -234,7 +236,7 @@ class Enemy {
     update(){
         if(startGame){
         if((KandyDaKane.xCoord - this.xCoord) < 300){// stops enemy from constant attack
-         if (this.xCoord < KandyDaKane.xCoord && this.yCoord > KandyDaKane.yCoord){// upward  right angle
+         if (this.xCoord < KandyDaKane.xCoord + 10 && this.yCoord > KandyDaKane.yCoord - 10){// upward  right angle
             this.xCoord++;
             this.yCoord--;
         } else if (this.xCoord > KandyDaKane.xCoord && this.yCoord < KandyDaKane.yCoord){// down left angle
@@ -251,8 +253,9 @@ class Enemy {
         }
     }
     draw(){
+        if (!this.markedToDelete){
         ctx.drawImage(this.image, 0, 0, this.width, this.height, this.xCoord, this.yCoord + 25, this.sizeX, this.sizeY); 
-    
+        }
     }
 }
 
@@ -419,6 +422,44 @@ function backgroundStartScreen(){
       }
 
 
+function hitTest(){
+    for (let b = bulletsArrayLeft.length - 1; b >= 0; b--){
+        for (let e = terroristArray.length - 1; e >= 0; e--){
+            let bArray = bulletsArrayLeft[b];
+            let tArray = terroristArray[e];
+            if(bArray.xCoordLeft > tArray.xCoord && bArray.xCoordLeft < tArray.xCoord + tArray.sizeX && bArray.yCoord > tArray.yCoord && bArray.yCoord < tArray.yCoord + tArray.sizeY){
+            tArray.markedToDelete = true;
+            if(tArray.markedToDelete){
+            bArray.markedToDelete = true;
+            } 
+            console.log(terroristArray);
+        }
+    }
+}
+for (let c = bulletsArrayRight.length - 1; c >= 0; c--){
+    for (let f = terroristArray.length - 1; f >= 0; f--){
+        let cArray = bulletsArrayRight[c];
+        let teArray = terroristArray[f];
+        if(cArray.xCoordRight > teArray.xCoord && cArray.xCoordRight < teArray.xCoord + teArray.sizeX && cArray.yCoord > teArray.yCoord && cArray.yCoord < teArray.yCoord + teArray.sizeY){
+        teArray.markedToDelete = true;
+        console.log('hit');
+        if(teArray.markedToDelete){
+        cArray.markedToDelete = true;
+        } 
+        console.log(terroristArray);
+    }
+}
+}
+    for (let terArray = terroristArray.length - 1; terArray >= 0; terArray--){
+        let eachTerrorist = terroristArray[terArray];
+        if (eachTerrorist.xCoord > KandyDaKane.xCoord && eachTerrorist.xCoord < KandyDaKane.xCoord + KandyDaKane.sizeX && eachTerrorist.yCoord > KandyDaKane.yCoord && eachTerrorist.yCoord < KandyDaKane.yCoord + KandyDaKane.sizeY && healthBar > 0){
+            healthBar = healthBar - 10;
+        }
+    }
+}
+
+
+
 function drawScore(){
     ctx.fillStyle = 'black';
     ctx.fillText('Current Score:     ' + scoreBoard, 662, 27);
@@ -529,8 +570,6 @@ function animation(timestamp){
     [...ravens, ...explosions].forEach(object => object.draw());
     
     ravens = ravens.filter(object => !object.markedToDelete);// would like insight on this line
-    explosions = explosions.filter(object => !object.markedToDelete);
-    // terroristArray = terroristArray.filter(object => !object.markedToDelete);
     
     if (startGame){
         terroristArray.forEach(enemy => {
@@ -540,6 +579,16 @@ function animation(timestamp){
             enemy.draw();
         })
     }
+
+    explosions = explosions.filter(object => !object.markedToDelete);
+    terroristArray = terroristArray.filter(object => !object.markedToDelete);
+
+    if (terroristArray.length === 0){
+        for (let i = 0; i < numberOfTerrorists; i++){
+            terroristArray.push(new Enemy());
+        }
+    }
+
     const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
     KandyCane;
     
@@ -556,7 +605,7 @@ function animation(timestamp){
                     bulletsArrayRight.push(new Gunshot());
                     console.log(bulletsArrayRight);
                     timeTillNextBullet = 0;
-                }}
+                }} 
                 [...bulletsArrayLeft].forEach(object => object.update(deltatime));
                 [...bulletsArrayRight].forEach(object => object.update(deltatime));
             }
@@ -574,7 +623,7 @@ function animation(timestamp){
                 // bulletsArrayRight = bulletsArrayRight.filter(object => !markedToDelete);
                 
                 if(startGame){
-                ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 425, 200, 200);
+                ctx.drawImage(santaSprite, 0, 0, santaSprite.width, santaSprite.height, santa.coordX, 475, 200, 200);
                 if(!pause){
                     santa.coordX--;
                 }
@@ -592,6 +641,12 @@ function animation(timestamp){
                 loadingMusic.pause();
             }
             
+
+            // END GAME IMAGE DISPLAY //
+            if (healthBar  == 0){
+                ctx.drawImage(EndGameIMG, 0, 100, canvas.width, 550);
+            }
+
             
                 backgroundStartScreen();
 
@@ -627,13 +682,19 @@ function animation(timestamp){
                     drawReset();
                     if(!pause){
                     spriteMovementKeys();
+                    hitTest();
                     }
            // END STYLING //
            // END OF ANIMATION LOOP //
 
+        //    console.log(terroristArray);
 }
 
 animation(0);
 
+// hitTest();
+
 
 });// end of load event listener all data within  //
+
+
