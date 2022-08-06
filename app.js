@@ -55,9 +55,8 @@ startScreenBackground.src = 'startScreenIMG.png';
 const howToPlayIMG = new Image();
 howToPlayIMG.src = 'howtoScreen.png';
 
-
-const loadingMusic = new Audio();
-loadingMusic.src = 'StartScreenMusic.ogg'
+const pauseMusic = new Audio();
+pauseMusic.src = 'StartScreenMusic.ogg'
 
 const mainMusic = new Audio();
 mainMusic.src = 'mainMusic.mp3'
@@ -79,7 +78,7 @@ let timeTillNextBullet = 0;
 let bulletsArrayRight = [];
  
 
-let numberOfTerrorists = 8;
+let numberOfTerrorists = 2;
 let terroristArray = [];
 
 const keys = [];
@@ -228,24 +227,24 @@ class Enemy {
         this.sizeX = this.width / 10;
         this.sizeY = this.height / 10;
         this.xCoord = Math.random() * 1000;
-        this.yCoord = Math.random() * canvas.height + canvas.height + 20;
+        this.yCoord = Math.random() * canvas.height + canvas.height + 50;
         this.speed = Math.random() * 4 + 1;
         this.frameX = 0; 
         this.markedToDelete = false;
     }
     update(){
         if(startGame){
-        if((KandyDaKane.xCoord - this.xCoord) < 300){// stops enemy from constant attack
-         if (this.xCoord < KandyDaKane.xCoord + 10 && this.yCoord > KandyDaKane.yCoord - 10){// upward  right angle
+        if((KandyDaKane.xCoord - this.xCoord) < 600){
+         if (this.xCoord < KandyDaKane.xCoord + 20 && this.yCoord > KandyDaKane.yCoord){// upward  right angle
             this.xCoord++;
             this.yCoord--;
-        } else if (this.xCoord > KandyDaKane.xCoord && this.yCoord < KandyDaKane.yCoord){// down left angle
+        } else if (this.xCoord > KandyDaKane.xCoord + 25 && this.yCoord < KandyDaKane.yCoord + 25){// down left angle
             this.xCoord--;
             this.yCoord++;
-        } else if (this.xCoord > KandyDaKane.xCoord && this.yCoord > KandyDaKane.yCoord){// up left angle
+        } else if (this.xCoord > KandyDaKane.xCoord + 25 && this.yCoord > KandyDaKane.yCoord){// up left angle
             this.xCoord--;
             this.yCoord--;
-        } else if (this.xCoord < KandyDaKane.xCoord && this.yCoord < KandyDaKane.yCoord){// down right angle
+        } else if (this.xCoord < KandyDaKane.xCoord + 25 && this.yCoord < KandyDaKane.yCoord + 25){// down right angle
             this.xCoord++;
             this.yCoord++;
         }
@@ -288,7 +287,6 @@ class Explosion {
         }
     }
     draw(){
-        
         ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, 
             this.spriteHeight, this.x, this.y + this.size/8, this.size, this.size);
     }
@@ -418,7 +416,7 @@ window.addEventListener('keyup', function(event){
 function backgroundStartScreen(){
     if (!startGame){
         ctx.drawImage(startScreenBackground, 0, 0, startScreenBackground.width, startScreenBackground.height, 0, 0, canvas.width, canvas.height);
-        // loadingMusic.play();
+        // pauseMusic.play();
     }
       }
 
@@ -636,11 +634,11 @@ function animation(timestamp){
 
             if (pause){
                 // mainMusic.play();
-                loadingMusic.play();
+                pauseMusic.play();
                 ctx.drawImage(pauseImage, 200, 200);
             }  else {
                 // mainMusic.play();
-                loadingMusic.pause();
+                pauseMusic.pause();
             }
             
 
