@@ -23,10 +23,7 @@ Health level
 ScoreBoard
 
 controls:
-
-
-
-
+![controls!](https://user-images.githubusercontent.com/106926062/183259975-228d98f7-cca7-469f-96cb-3f53cb59e92d.png)
 
 
 Design:
