@@ -2,7 +2,7 @@
 
 Game Title: Kandy's Payback: The hunt for Mrs. Claus
 
-Game Link:  https://calvickauer.github.io/Kandy-s-Payback-The-hunt-Mrs-Claus/ 
+Game Link: https://calvickauer.github.io/Kandy-s-Payback-The-hunt-Mrs-Claus-GA-SEIRFX-621-Project-1-/
 
 ![Game!](https://user-images.githubusercontent.com/106926062/183257513-431fc8a0-ed4e-4506-9a34-3fbb4b6b3908.png)
 
