@@ -36,6 +36,10 @@ const santaSprite = new Image();
 santaSprite.src = './creepySanta.png';
 
 // screen images //
+const explanationIMG = new Image();
+explanationIMG.src = 'explainImg.png';
+
+
 const pauseImage = new Image();
 pauseImage.src = 'PauseIMG.png';
 
@@ -90,6 +94,7 @@ const keys = [];
 let startGame = false;
 let pause = false;
 let howToPlay = false;
+let explain = false;
 
 const santa = {
     coordX: 1500,
@@ -382,8 +387,11 @@ window.addEventListener('keyup', function(event){
         scoreBoard = 0;
         healthBar = 100;
         howToPlay = false;
+    } else if (event.offsetX > 0 && event.offsetX < 950 && event.offsetY > 100 && event.offsetY < 700){
+        explain = true;
     }
     })
+
 
     // END CLICK EVENT //
 
@@ -397,6 +405,16 @@ function backgroundStartScreen(){
               0, 0, canvas.width, canvas.height);    
     }
       }
+
+
+      function summary(){
+        if (!explain){
+            ctx.drawImage(explanationIMG, 0, 0,
+                 explanationIMG.width, explanationIMG.height,
+                  0, 80, canvas.width, canvas.height - 60);    
+        }
+        }
+          
 
 
 function hitTest(){
@@ -558,7 +576,7 @@ function animation(timestamp){
     
     eagles = eagles.filter(object => !object.markedToDelete);// would like insight on this line
     
-    if (startGame){
+    if (startGame && explain){
         terroristArray.forEach(enemy => {
             if(!pause){
                 enemy.update();
@@ -633,6 +651,8 @@ function animation(timestamp){
                 if (healthBar  == 0){
                     ctx.drawImage(EndGameIMG, 0, 100, canvas.width, 550);
                 }
+                
+                summary();
                 backgroundStartScreen();
 
                 if (howToPlay){
