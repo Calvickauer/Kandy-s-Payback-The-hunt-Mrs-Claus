@@ -53,7 +53,7 @@ const startScreenBackground = new Image();
 startScreenBackground.src = 'startScreenIMG.png';
 
 const howToPlayIMG = new Image();
-howToPlayIMG.src = 'HowToIMG.png';
+howToPlayIMG.src = 'howtoScreen.png';
 
 
 const loadingMusic = new Audio();
@@ -65,7 +65,7 @@ mainMusic.src = 'mainMusic.mp3'
 let timeTillNextAttackRaven = 0;
 let ravenInterval = 2000;
 let lastTime = 0;
-let ravens = [];
+let eagles = [];
 let backgroundFrameX = 1;
 
 let healthBar = 100;
@@ -79,7 +79,7 @@ let timeTillNextBullet = 0;
 let bulletsArrayRight = [];
  
 
-const numberOfTerrorists = 8;
+let numberOfTerrorists = 8;
 let terroristArray = [];
 
 const keys = [];
@@ -227,8 +227,8 @@ class Enemy {
         this.height = 1291;
         this.sizeX = this.width / 10;
         this.sizeY = this.height / 10;
-        this.xCoord = Math.random() * 1000 + 900;
-        this.yCoord = Math.random() * canvas.height + 300;
+        this.xCoord = Math.random() * 1000;
+        this.yCoord = Math.random() * canvas.height + canvas.height + 20;
         this.speed = Math.random() * 4 + 1;
         this.frameX = 0; 
         this.markedToDelete = false;
@@ -323,7 +323,7 @@ window.addEventListener('keyup', function(event){
 });
 
     canvas.addEventListener('mousedown', function(event){
-        ravens.forEach((raven)=>{
+        eagles.forEach((raven)=>{
             if (event.offsetX > raven.xCoord && 
                 event.offsetY > raven.yCoord &&
                  event.offsetX < raven.xCoord + raven.width + 20 &&
@@ -387,7 +387,8 @@ window.addEventListener('keyup', function(event){
         terroristArray = [];
         bulletsArrayLeft = [];
         bulletsArrayRight = [];
-        ravens = [];
+        eagles = [];
+        KandyDaKane.xCoord = 400;
         for (let i = 0; i < numberOfTerrorists; i++){
             terroristArray.push(new Enemy());
         }
@@ -453,7 +454,7 @@ for (let c = bulletsArrayRight.length - 1; c >= 0; c--){
     for (let terArray = terroristArray.length - 1; terArray >= 0; terArray--){
         let eachTerrorist = terroristArray[terArray];
         if (eachTerrorist.xCoord > KandyDaKane.xCoord && eachTerrorist.xCoord < KandyDaKane.xCoord + KandyDaKane.sizeX && eachTerrorist.yCoord > KandyDaKane.yCoord && eachTerrorist.yCoord < KandyDaKane.yCoord + KandyDaKane.sizeY && healthBar > 0){
-            healthBar = healthBar - 10;
+            healthBar = healthBar - 1;
         }
     }
 }
@@ -558,18 +559,18 @@ function animation(timestamp){
     lastTime = timestamp;
     timeTillNextAttackRaven += deltatime;
     if (timeTillNextAttackRaven > ravenInterval){
-        ravens.push(new AttackRaven());
+        eagles.push(new AttackRaven());
         timeTillNextAttackRaven = 0;
-        ravens.sort(function(a, b) {
+        eagles.sort(function(a, b) {
             return a.width - b.width;// draws smaller birds first so they are dynamically layered
         });
     };
     if(!pause){
-        [...ravens, ...explosions].forEach(object => object.update(deltatime));
+        [...eagles, ...explosions].forEach(object => object.update(deltatime));
     }
-    [...ravens, ...explosions].forEach(object => object.draw());
+    [...eagles, ...explosions].forEach(object => object.draw());
     
-    ravens = ravens.filter(object => !object.markedToDelete);// would like insight on this line
+    eagles = eagles.filter(object => !object.markedToDelete);// would like insight on this line
     
     if (startGame){
         terroristArray.forEach(enemy => {
@@ -587,6 +588,7 @@ function animation(timestamp){
         for (let i = 0; i < numberOfTerrorists; i++){
             terroristArray.push(new Enemy());
         }
+        numberOfTerrorists = numberOfTerrorists + 2;
     }
 
     const KandyCane = ctx.drawImage(KandyDaKane.image, 0, 0, KandyDaKane.width, KandyDaKane.height, KandyDaKane.xCoord, KandyDaKane.yCoord, KandyDaKane.sizeX, KandyDaKane.sizeY); 
