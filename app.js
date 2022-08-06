@@ -37,8 +37,7 @@ santaSprite.src = './creepySanta.png';
 
 // screen images //
 const explanationIMG = new Image();
-explanationIMG.src = 'explainImg.png';
-
+explanationIMG.src = 'explainmeIMG.png';
 
 const pauseImage = new Image();
 pauseImage.src = 'PauseIMG.png';
