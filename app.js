@@ -23,42 +23,42 @@ const background = {
     width: 640
 }
 
-// main character and AI characters //
+// main character and AI characters Images //
 const rightKandySprite = new Image();
-rightKandySprite.src = "playerSprites/DaRealKane.png";
+rightKandySprite.src = "Character-Images/DaRealKane.png";
 const leftKandySprite = new Image();
-leftKandySprite.src = 'playerSprites/DaRealKane copy.png';
+leftKandySprite.src = 'Character-Images/DaRealKane copy.png';
 
 const enemySprite = new Image();
-enemySprite.src = "./craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png";
+enemySprite.src = "Character-Images/2_terrorist_2_Attack3_000.png";
 
 const santaSprite = new Image();
-santaSprite.src = './creepySanta.png';
+santaSprite.src = 'Character-Images/creepySanta.png';
 
 // screen images //
 const explanationIMG = new Image();
-explanationIMG.src = 'explainmeIMG.png';
+explanationIMG.src = 'Background-Images/explainmeIMG.png';
 
 const pauseImage = new Image();
-pauseImage.src = 'PauseIMG.png';
+pauseImage.src = 'Background-Images/PauseIMG.png';
 
 const gifBackground = new Image();
-gifBackground.src = './backgroundSheet.png';
+gifBackground.src = 'Background-Images/backgroundSheet.png';
 gifBackground.id = 'background';
 
 const EndGameIMG = new Image();
-EndGameIMG.src = 'gameoverrr.jpeg';
+EndGameIMG.src = 'Background-Images/gameoverrr.jpeg';
 
 const startScreenBackground = new Image();
-startScreenBackground.src = 'startScreenIMG.png';
+startScreenBackground.src = 'Background-Images/startScreenIMG.png';
 
 const howToPlayIMG = new Image();
-howToPlayIMG.src = 'howtoScreen.png';
+howToPlayIMG.src = 'Background-Images/howtoScreen.png';
 //  end of screen images //
 
 // Audio files //
 const pauseMusic = new Audio();
-pauseMusic.src = 'StartScreenMusic.ogg'
+pauseMusic.src = 'sounds/StartScreenMusic.ogg'
 pauseMusic.volume = 0.5;
 const mainMusic = new Audio();
 mainMusic.src = 'theme-loop.ogg';
@@ -96,7 +96,7 @@ let howToPlay = false;
 let explain = false;
 
 const santa = {
-    coordX: 1500,
+    coordX: 2500,
 }
 
 // Player CLASS //
@@ -179,7 +179,7 @@ class AttackRaven {
         this.markedToDelete = false;
 
         this.image = new Image();
-        this.image.src = './baldEagle.png';
+        this.image.src = 'Character-Images/baldEagle.png';
         this.frame = 0;
         this.maxFrame = 2;
         this.timeSinceFlap = 0;
@@ -217,7 +217,7 @@ class AttackRaven {
 class Enemy {
     constructor(){
         this.image = new Image();
-        this.image.src = './craftpix-485144-2d-game-terrorists-character-free-sprites-sheets/png/2/Attack3/2_terrorist_2_Attack3_000.png';
+        this.image.src = 'Character-Images/2_terrorist_2_Attack3_000.png';
         this.width = 598;
         this.height = 1291;
         this.sizeX = this.width / 10;
@@ -266,7 +266,7 @@ class Enemy {
 class Explosion {
     constructor(xCoord, yCoord, imageSize){
         this.image = new Image();
-        this.image.src = 'blood.png';
+        this.image.src = 'Background-Images/blood.png';
         this.spriteHeight = 512;
         this.spriteWidth = 512;
         this.size = imageSize;
@@ -274,7 +274,7 @@ class Explosion {
         this.y = yCoord;
         this.frame = 0;
         this.sound = new Audio();
-        this.sound.src = 'shotgun.wav';
+        this.sound.src = 'sounds/shotgun.wav';
         this.sound.volume = 0.3;
         this.timeSinceLastFrame = 0;
         this.frameInterval = 300;
