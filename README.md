@@ -33,6 +33,31 @@ Design:
 - recieve damage if hit test positive with ai generated characters.
 
 
+Code Snippets: 
+
+        Main Character Movement
+![snip1!](https://user-images.githubusercontent.com/106926062/183533293-75a7df54-380e-4fd9-9e5d-fbcba87344ac.png)
+![snip1.2!](https://user-images.githubusercontent.com/106926062/183534245-b60c59e1-3b66-4dd1-86e5-8fbeb764394b.png)
+
+        Styling for Canvas click event buttons
+![snip2!](https://user-images.githubusercontent.com/106926062/183533307-95555434-a34f-4ef9-9e5d-942b389af8c2.png)
+
+        Buttons for Canvas click event
+![snip3!](https://user-images.githubusercontent.com/106926062/183533378-270c8cba-516c-4153-865a-7e85771acbc9.png)
+
+
+        Bird hit animation class
+![snip3!](https://user-images.githubusercontent.com/106926062/183533403-4126b563-49a7-47f5-af98-ce658b001ac4.png)
+
+        Hit test for Birds using a mousedown event
+![snip4!](https://user-images.githubusercontent.com/106926062/183533407-1dcb27d4-b15b-44d6-adf6-dde547afe5dc.png)
+
+        Enemy class with random location generating feature
+![snip5](https://user-images.githubusercontent.com/106926062/183533455-b93b3285-1776-4f92-9137-28f6b1df3b43.png)
+
+
+
+
 Progress Pictures:
 
 ![Game1!](https://user-images.githubusercontent.com/106926062/183257103-81eed4ee-65c8-45c9-9520-08d3c028db61.png)
