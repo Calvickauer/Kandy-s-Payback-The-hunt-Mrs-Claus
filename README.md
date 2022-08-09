@@ -94,4 +94,10 @@ Canvas layout
 Webpage Layout
 ![Game1!](https://user-images.githubusercontent.com/106926062/183257159-75c6d461-e7c6-4671-8fff-95ec49a030b4.png)
 
+Mobile page Layout
+![Game!](https://user-images.githubusercontent.com/106926062/183565792-1adbb2c6-201c-4da2-97f1-4729245bfa83.png)
+
+Mobile Layout
+![Game!](https://user-images.githubusercontent.com/106926062/183565753-1536cd07-4c2f-4a52-895e-ee8feba5dc56.png)
+
 
