@@ -60,8 +60,8 @@ howToPlayIMG.src = 'Background-Images/howtoScreen.png';
 const pauseMusic = new Audio();
 pauseMusic.src = 'sounds/StartScreenMusic.ogg'
 pauseMusic.volume = 0.5;
-const mainMusic = new Audio();
-mainMusic.src = 'theme-loop.ogg';
+// const mainMusic = new Audio();
+// mainMusic.src = 'theme-loop.ogg';
 
 // bird interval / array / starting frame
 let timeTillNextAttackRaven = 0;
@@ -347,7 +347,7 @@ window.addEventListener('keyup', function(event){
             console.log('Start Game button Pressed');
             pause = false;
             howToPlay = false;
-            mainMusic.play();
+            // mainMusic.play();
             console.log('not paused');
         if (!startGame){
             startGame = true;

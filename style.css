@@ -1,3 +1,9 @@
+* {
+    margin:  0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 #canvasMain {
     border: 5px groove rgb(8, 6, 6);
    /* z-index: 1; */
@@ -7,6 +13,8 @@
     top: 57%;
     left: 50%;
     transform: translate(-50%, -57%);
+    max-width: 100%;
+    max-height: 100%;
 }
 
 h1 {
@@ -23,6 +31,8 @@ h1 {
 }
 
 #titleContainer {
+    max-width: 100%;
+    max-height: 100%;
   /*\ border: 10px groove white;
   background: rgb(255,0,0);
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,255,1) 7%, rgba(233,19,7,1) 13%, rgba(255,255,255,1) 25%, rgba(238,1,1,0.9906337535014006) 35%, rgba(255,255,255,1) 45%, rgba(255,0,16,1) 56%, rgba(255,255,255,1) 64%, rgba(255,0,16,1) 72%, rgba(255,255,255,1) 79%, rgba(255,0,16,1) 86%, rgba(255,255,255,1) 93%, rgba(255,0,16,1) 100%); */
@@ -57,6 +67,8 @@ body {
 
 
 #collisionCanvas {
+    max-width: 100%;
+    max-height: 100%;
     /* display: flex;
     flex-direction: column;
     justify-content: space-around; */
