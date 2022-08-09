@@ -34,7 +34,9 @@ Design:
 
 Technologies used:
     Javascript (ES6)
+
     HTML5 with HTML5 audio
+    
     CSS
 
 
