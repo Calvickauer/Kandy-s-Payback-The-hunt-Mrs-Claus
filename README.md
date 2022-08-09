@@ -33,10 +33,9 @@ Design:
 - recieve damage if hit test positive with ai generated characters.
 
 Technologies used:
-    Javascript (ES6)
 
+    Javascript (ES6)
     HTML5 with HTML5 audio
-    
     CSS
 
 
