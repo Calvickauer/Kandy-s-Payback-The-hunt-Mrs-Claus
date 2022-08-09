@@ -41,9 +41,10 @@ Technologies used:
 
 
 Future Enhancements:
+
     Difficulty settings
     Audio for enemies and other events
-    Background animations / Additional animations
+    Background animations /Additional animations
     Enemy health
     Remove enemy overlap
     Aditional chracters
