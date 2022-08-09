@@ -32,6 +32,23 @@ Design:
 - give a responsive layout with click events
 - recieve damage if hit test positive with ai generated characters.
 
+Technologies used:
+    Javascript (ES6)
+    HTML5 with HTML5 audio
+    CSS
+
+
+
+Future Enhancements:
+    Difficulty settings
+    Audio for enemies and other events
+    Background animations / Additional animations
+    Enemy health
+    Remove enemy overlap
+    Aditional chracters
+    Mobile friendly
+
+
 
 Code Snippets: 
 
@@ -46,13 +63,13 @@ Code Snippets:
 ![snip3!](https://user-images.githubusercontent.com/106926062/183533378-270c8cba-516c-4153-865a-7e85771acbc9.png)
 
 
-        Bird hit animation class
+        Bird hit animation class aka Explosion class
 ![snip3!](https://user-images.githubusercontent.com/106926062/183533403-4126b563-49a7-47f5-af98-ce658b001ac4.png)
 
         Hit test for Birds using a mousedown event
 ![snip4!](https://user-images.githubusercontent.com/106926062/183533407-1dcb27d4-b15b-44d6-adf6-dde547afe5dc.png)
 
-        Enemy class with random location generating feature
+        Enemy class with random spawn location feature
 ![snip5](https://user-images.githubusercontent.com/106926062/183533455-b93b3285-1776-4f92-9137-28f6b1df3b43.png)
 
 
@@ -60,14 +77,19 @@ Code Snippets:
 
 Progress Pictures:
 
+Bird hit detection
 ![Game1!](https://user-images.githubusercontent.com/106926062/183257103-81eed4ee-65c8-45c9-9520-08d3c028db61.png)
 
+Grid for mousedown locations
 ![Game1!](https://user-images.githubusercontent.com/106926062/183257096-15461ae1-3230-4de6-ac56-62bcdd43cb39.png)
 
+Bird flight pattern
 ![Game1!](https://user-images.githubusercontent.com/106926062/183257089-f1118d2e-d4af-4455-b0d9-0cfbce72e0ee.png)
 
+Canvas layout
 ![GAME!](https://user-images.githubusercontent.com/106926062/183257153-ca470d14-cb07-4d86-8811-43e72abd90d3.png)
 
+Webpage Layout
 ![Game1!](https://user-images.githubusercontent.com/106926062/183257159-75c6d461-e7c6-4671-8fff-95ec49a030b4.png)
 
 
