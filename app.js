@@ -323,9 +323,10 @@ window.addEventListener('keyup', function(event){
 
     canvas.addEventListener('mousedown', function(event){
         eagles.forEach((raven)=>{
-            if (event.offsetX > raven.xCoord && 
+            if (!pause &&
+                event.offsetX > raven.xCoord - 10 && 
                 event.offsetY > raven.yCoord &&
-                 event.offsetX < raven.xCoord + raven.width + 20 &&
+                 event.offsetX < raven.xCoord + raven.width + 10 &&
                  event.offsetY < raven.yCoord + raven.height
                  ){
         
@@ -536,12 +537,12 @@ function spriteMovementKeys(){
     } else if (keys['d'] && KandyDaKane.xCoord < canvas.width - 50){
         KandyDaKane.xCoord += KandyDaKane.speed;
         KandyDaKane.moving = true;
+        KandyDaKane.image = rightKandySprite;
+        KandyDaKane.gunOrientationLeft = false;
         console.log(`Key D -- X: ${KandyDaKane.xCoord}  Y: ${KandyDaKane.yCoord}`);
     } else if (keys['w'] && KandyDaKane.yCoord > 350){
         KandyDaKane.yCoord -= KandyDaKane.speed;
         KandyDaKane.moving = true;
-        KandyDaKane.image = rightKandySprite;
-        KandyDaKane.gunOrientationLeft = false;
         console.log(`Key W -- X:  ${KandyDaKane.xCoord}  Y:  ${KandyDaKane.yCoord}`);
     } else if (keys["s"] && KandyDaKane.yCoord < canvas.height - KandyDaKane.sizeY){
         KandyDaKane.yCoord += KandyDaKane.speed;
