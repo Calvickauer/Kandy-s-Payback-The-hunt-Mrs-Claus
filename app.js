@@ -530,6 +530,8 @@ function spriteMovementKeys(){
     } else if (keys['a'] && KandyDaKane.xCoord > 0){
         KandyDaKane.xCoord -= KandyDaKane.speed;
         KandyDaKane.moving = true;
+        KandyDaKane.image = leftKandySprite;
+        KandyDaKane.gunOrientationLeft = true;
         console.log(`Key A -- X: ${KandyDaKane.xCoord} Y: ${KandyDaKane.yCoord}`);
     } else if (keys['d'] && KandyDaKane.xCoord < canvas.width - 50){
         KandyDaKane.xCoord += KandyDaKane.speed;
@@ -538,6 +540,8 @@ function spriteMovementKeys(){
     } else if (keys['w'] && KandyDaKane.yCoord > 350){
         KandyDaKane.yCoord -= KandyDaKane.speed;
         KandyDaKane.moving = true;
+        KandyDaKane.image = rightKandySprite;
+        KandyDaKane.gunOrientationLeft = false;
         console.log(`Key W -- X:  ${KandyDaKane.xCoord}  Y:  ${KandyDaKane.yCoord}`);
     } else if (keys["s"] && KandyDaKane.yCoord < canvas.height - KandyDaKane.sizeY){
         KandyDaKane.yCoord += KandyDaKane.speed;
